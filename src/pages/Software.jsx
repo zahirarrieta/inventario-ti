@@ -69,7 +69,7 @@ export default function Software({ showToast }) {
   const clearFilters = () => { setSearch(""); setFEstado(""); setPage(1); };
 
   return (
-    <div className="p-6 animate-fade-in">
+    <div className="space-y-6 animate-fade-in">
       <PageHeader
         title="Software y Licencias"
         subtitle="Gestión de software y licencias"
@@ -78,14 +78,14 @@ export default function Software({ showToast }) {
         onAction={openNew}
       />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard icon={CheckCircle} value={licencias.disponibles} label="Disponibles" color="#10b981" delay={0} />
-        <StatCard icon={Key} value={licencias.utilizadas} label="Utilizadas" color="var(--ctp-blue)" delay={0.1} />
+        <StatCard icon={Key} value={licencias.utilizadas} label="Utilizadas" color="#023859" delay={0.1} />
         <StatCard icon={AlertTriangle} value={licencias.porVencer} label="Por vencer" color="#f59e0b" delay={0.2} />
         <StatCard icon={Trash2} value={licencias.vencidas} label="Vencidas" color="#ef4444" delay={0.3} />
       </div>
 
-      <div className="card-premium p-4 border-b border-white/5 mb-4 animate-fade-in-up">
+      <div className="card-premium p-4 animate-fade-in-up">
         <FilterBar
           search={search}
           onSearchChange={(val) => { setSearch(val); setPage(1); }}
@@ -176,28 +176,10 @@ export default function Software({ showToast }) {
                         <StatusBadge estado={s.estado} />
                       </td>
                       <td>
-                        <div className="flex items-center gap-1">
-                          <button
-                            className="p-1.5 rounded-lg text-text-muted hover:text-ctp-cyan hover:bg-ctp-cyan/10 transition-all"
-                            title="Ver detalle"
-                            onClick={() => setShowDetail(s)}
-                          >
-                            <Eye size={15} />
-                          </button>
-                          <button
-                            className="p-1.5 rounded-lg text-text-muted hover:text-warning hover:bg-warning/10 transition-all"
-                            title="Editar"
-                            onClick={() => openEdit(s)}
-                          >
-                            <Pencil size={15} />
-                          </button>
-                          <button
-                            className="p-1.5 rounded-lg text-text-muted hover:text-danger hover:bg-danger/10 transition-all"
-                            title="Eliminar"
-                            onClick={() => setShowDelete(s)}
-                          >
-                            <Trash2 size={15} />
-                          </button>
+                        <div className="table-actions">
+                          <button className="btn-icon" title="Ver detalle" onClick={() => setShowDetail(s)}><Eye size={16} /></button>
+                          <button className="btn-icon edit" title="Editar" onClick={() => openEdit(s)}><Pencil size={16} /></button>
+                          <button className="btn-icon danger" title="Eliminar" onClick={() => setShowDelete(s)}><Trash2 size={16} /></button>
                         </div>
                       </td>
                     </tr>
@@ -280,7 +262,7 @@ export default function Software({ showToast }) {
         {showDetail && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Info General */}
-            <div className="rounded-xl border border-white/5 bg-white/[0.02] p-4">
+            <div className="inset-panel">
               <h6 className="flex items-center gap-2 text-sm font-semibold text-text-primary mb-3">
                 <Box size={16} className="text-ctp-cyan" />
                 Información General
@@ -314,7 +296,7 @@ export default function Software({ showToast }) {
             </div>
 
             {/* Licencias */}
-            <div className="rounded-xl border border-white/5 bg-white/[0.02] p-4">
+            <div className="inset-panel">
               <h6 className="flex items-center gap-2 text-sm font-semibold text-text-primary mb-3">
                 <Key size={16} className="text-ctp-cyan" />
                 Licencias

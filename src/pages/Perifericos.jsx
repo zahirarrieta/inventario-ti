@@ -7,6 +7,7 @@ import EmptyState from "../components/EmptyState";
 import ConfirmModal from "../components/ConfirmModal";
 import Pagination from "../components/Pagination";
 import FilterBar from "../components/FilterBar";
+import StatCard from "../components/StatCard";
 import { Eye, Pencil, Trash2, Keyboard, Package, UserCheck, ArchiveX } from "lucide-react";
 
 const ESTADOS = ["Activo", "Disponible", "Dado de baja"];
@@ -83,36 +84,21 @@ export default function Perifericos({ showToast }) {
         onAction={openNew}
       />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {statCards.map((s, i) => (
-          <div
+          <StatCard
             key={s.label}
-            className="card-premium p-5 relative overflow-hidden animate-fade-in-up"
-            style={{ animationDelay: `${i * 0.08}s` }}
-          >
-            <div
-              className="absolute top-0 right-0 w-32 h-32 opacity-[0.03]"
-              style={{ background: `radial-gradient(circle, ${s.color}, transparent)` }}
-            />
-            <div className="flex items-start justify-between mb-4">
-              <div
-                className="w-12 h-12 rounded-[14px] flex items-center justify-center"
-                style={{ background: `${s.color}18`, boxShadow: `0 0 20px ${s.color}15` }}
-              >
-                <s.icon size={22} style={{ color: s.color }} />
-              </div>
-            </div>
-            <div className="text-[10px] font-semibold uppercase tracking-widest text-text-muted mb-1">{s.label}</div>
-            <div className="text-[32px] font-extrabold text-text-primary leading-none mb-1" style={{ fontFamily: "Montserrat" }}>
-              {s.value}
-            </div>
-            <div className="text-xs text-text-muted">{s.description}</div>
-          </div>
+            icon={s.icon}
+            value={s.value}
+            label={s.label}
+            description={s.description}
+            color={s.color}
+            delay={i * 0.05}
+          />
         ))}
       </div>
 
-      <div className="card-premium mb-4 animate-fade-in-up" style={{ animationDelay: "0.35s" }}>
-        <div className="p-4">
+      <div className="card-premium p-4 animate-fade-in-up stagger-2">
           <FilterBar
             search={search}
             onSearchChange={(v) => { setSearch(v); setPage(1); }}
@@ -124,10 +110,9 @@ export default function Perifericos({ showToast }) {
             ]}
             onClear={clearFilters}
           />
-        </div>
       </div>
 
-      <div className="card-premium animate-fade-in-up" style={{ animationDelay: "0.45s" }}>
+      <div className="card-premium overflow-hidden animate-fade-in-up stagger-3">
         <div className="overflow-x-auto">
           <table className="table-dark-ctp">
             <thead>
@@ -164,28 +149,10 @@ export default function Perifericos({ showToast }) {
                     <td className="text-text-muted text-xs">{p.ubicacion || "-"}</td>
                     <td><StatusBadge estado={p.estado} /></td>
                     <td>
-                      <div className="flex items-center justify-end gap-1">
-                        <button
-                          className="p-2 rounded-lg hover:bg-white/[0.06] text-text-muted hover:text-ctp-cyan transition-all"
-                          title="Ver detalle"
-                          onClick={() => setShowDetail(p)}
-                        >
-                          <Eye size={15} />
-                        </button>
-                        <button
-                          className="p-2 rounded-lg hover:bg-white/[0.06] text-text-muted hover:text-amber-400 transition-all"
-                          title="Editar"
-                          onClick={() => openEdit(p)}
-                        >
-                          <Pencil size={15} />
-                        </button>
-                        <button
-                          className="p-2 rounded-lg hover:bg-white/[0.06] text-text-muted hover:text-danger transition-all"
-                          title="Eliminar"
-                          onClick={() => setShowDelete(p)}
-                        >
-                          <Trash2 size={15} />
-                        </button>
+                      <div className="table-actions">
+                        <button className="btn-icon" title="Ver detalle" onClick={() => setShowDetail(p)}><Eye size={16} /></button>
+                        <button className="btn-icon edit" title="Editar" onClick={() => openEdit(p)}><Pencil size={16} /></button>
+                        <button className="btn-icon danger" title="Eliminar" onClick={() => setShowDelete(p)}><Trash2 size={16} /></button>
                       </div>
                     </td>
                   </tr>
@@ -289,7 +256,7 @@ export default function Perifericos({ showToast }) {
                 <Keyboard size={16} className="text-ctp-cyan" />
                 Información General
               </h6>
-              <div className="space-y-3 rounded-xl border border-white/5 bg-white/[0.02] p-4">
+              <div className="space-y-3 inset-panel">
                 <div className="flex justify-between items-center">
                   <span className="text-xs text-text-muted">Código</span>
                   <code className="text-sm text-ctp-cyan font-semibold">{showDetail.codigo}</code>
@@ -326,7 +293,7 @@ export default function Perifericos({ showToast }) {
                 <UserCheck size={16} className="text-ctp-cyan" />
                 Asignación
               </h6>
-              <div className="space-y-3 rounded-xl border border-white/5 bg-white/[0.02] p-4">
+              <div className="space-y-3 inset-panel">
                 <div className="flex justify-between items-center">
                   <span className="text-xs text-text-muted">Usuario</span>
                   <span className="text-sm text-text-secondary">{getUsuarioNombre(showDetail.usuarioId)}</span>

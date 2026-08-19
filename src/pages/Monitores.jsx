@@ -118,28 +118,10 @@ export default function Monitores({ showToast }) {
                   <td>{getUsuarioNombre(m.usuarioId)}</td>
                   <td><StatusBadge estado={m.estado} /></td>
                   <td>
-                    <div className="flex items-center justify-end gap-1">
-                      <button
-                        onClick={() => setShowDetail(m)}
-                        className="p-2 rounded-lg hover:bg-white/5 text-text-muted hover:text-ctp-cyan transition-all"
-                        title="Ver detalle"
-                      >
-                        <Eye size={15} />
-                      </button>
-                      <button
-                        onClick={() => openEdit(m)}
-                        className="p-2 rounded-lg hover:bg-white/5 text-text-muted hover:text-ctp-cyan transition-all"
-                        title="Editar"
-                      >
-                        <Pencil size={15} />
-                      </button>
-                      <button
-                        onClick={() => setShowDelete(m)}
-                        className="p-2 rounded-lg hover:bg-white/5 text-text-muted hover:text-danger transition-all"
-                        title="Eliminar"
-                      >
-                        <Trash2 size={15} />
-                      </button>
+                    <div className="table-actions">
+                      <button onClick={() => setShowDetail(m)} className="btn-icon" title="Ver detalle"><Eye size={16} /></button>
+                      <button onClick={() => openEdit(m)} className="btn-icon edit" title="Editar"><Pencil size={16} /></button>
+                      <button onClick={() => setShowDelete(m)} className="btn-icon danger" title="Eliminar"><Trash2 size={16} /></button>
                     </div>
                   </td>
                 </tr>
@@ -226,7 +208,7 @@ export default function Monitores({ showToast }) {
       <Modal show={!!showDetail} onClose={() => setShowDetail(null)} title="Detalle del monitor" size="lg">
         {showDetail && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="rounded-xl border border-white/8 bg-white/[0.02] p-5">
+            <div className="inset-panel">
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-8 h-8 rounded-lg bg-ctp-cyan/10 flex items-center justify-center">
                   <MonitorIcon size={16} className="text-ctp-cyan" />
@@ -241,7 +223,7 @@ export default function Monitores({ showToast }) {
                 <div className="flex justify-between items-center"><span className="text-xs text-text-muted">Estado:</span><StatusBadge estado={showDetail.estado} /></div>
               </div>
             </div>
-            <div className="rounded-xl border border-white/8 bg-white/[0.02] p-5">
+            <div className="inset-panel">
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-8 h-8 rounded-lg bg-ctp-cyan/10 flex items-center justify-center">
                   <MonitorIcon size={16} className="text-ctp-cyan" />

@@ -1,21 +1,15 @@
-import { LineChart, Line, ResponsiveContainer } from "recharts";
-
-export default function StatCard({ icon: Icon, value, label, description, color = "#0FDBF2", trend, trendDir = "up", sparkData, delay = 0 }) {
-  const data = sparkData || [
-    { v: 12 }, { v: 19 }, { v: 14 }, { v: 22 }, { v: 18 }, { v: 25 }, { v: 20 }, { v: 28 },
-  ];
-
+export default function StatCard({ icon: Icon, value, label, description, color = "#0FDBF2", trend, trendDir = "up", delay = 0 }) {
   return (
     <div
-      className="card-premium p-5 relative overflow-hidden animate-fade-in-up"
+      className="card-premium stat-card animate-fade-in-up"
       style={{ animationDelay: `${delay}s` }}
     >
-      <div className="absolute top-0 right-0 w-32 h-32 opacity-[0.03]" style={{ background: `radial-gradient(circle, ${color}, transparent)` }} />
+      <div className="stat-card-accent" style={{ background: color }} />
 
-      <div className="flex items-start justify-between mb-4">
+      <div className="flex items-start justify-between gap-3 mb-4">
         <div
-          className="w-12 h-12 rounded-[14px] flex items-center justify-center"
-          style={{ background: `${color}18`, boxShadow: `0 0 20px ${color}15` }}
+          className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
+          style={{ background: `${color}22` }}
         >
           <Icon size={22} style={{ color }} />
         </div>
@@ -28,19 +22,11 @@ export default function StatCard({ icon: Icon, value, label, description, color 
         )}
       </div>
 
-      <div className="text-[10px] font-semibold uppercase tracking-widest text-text-muted mb-1">{label}</div>
-      <div className="text-[32px] font-extrabold text-text-primary leading-none mb-1" style={{ fontFamily: "Montserrat" }}>
+      <div className="text-[11px] font-bold uppercase tracking-widest text-text-muted mb-1.5">{label}</div>
+      <div className="text-[30px] font-extrabold text-text-primary leading-none mb-1.5 tracking-tight">
         {value}
       </div>
-      {description && <div className="text-xs text-text-muted">{description}</div>}
-
-      <div className="absolute bottom-0 right-0 w-24 h-10 opacity-40">
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data}>
-            <Line type="monotone" dataKey="v" stroke={color} strokeWidth={2} dot={false} />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
+      {description && <div className="text-xs text-text-muted leading-snug">{description}</div>}
     </div>
   );
 }

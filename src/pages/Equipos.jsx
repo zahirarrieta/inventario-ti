@@ -6,6 +6,7 @@ import EmptyState from "../components/EmptyState";
 import ConfirmModal from "../components/ConfirmModal";
 import Pagination from "../components/Pagination";
 import StatCard from "../components/StatCard";
+import FilterBar from "../components/FilterBar";
 import { Monitor, Eye, Pencil, Trash2, UserCheck, Info, Cpu, User, ShieldCheck, Plus } from "lucide-react";
 
 const ESTADOS = ["Activo", "Disponible", "En mantenimiento", "Dado de baja"];
@@ -75,7 +76,6 @@ export default function Equipos({ showToast }) {
   };
 
   const clearFilters = () => { setSearch(""); setFTipo(""); setFMarca(""); setFEstado(""); setFUbicacion(""); setFUsuario(""); setPage(1); };
-  const hasFilters = search || fTipo || fMarca || fEstado || fUbicacion || fUsuario;
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -92,51 +92,26 @@ export default function Equipos({ showToast }) {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard icon={Monitor} value={kpis.total} label="Total Equipos" description="Todos los registros" color="#0FDBF2" delay={0} />
-        <StatCard icon={UserCheck} value={kpis.asignados} label="Asignados" description="Con usuario activo" color="#a855f7" delay={0.05} />
-        <StatCard icon={Info} value={kpis.disponibles} label="Disponibles" description="Pendientes de asignar" color="#10b981" delay={0.10} />
-        <StatCard icon={Cpu} value={kpis.mantenimiento} label="En Mantenimiento" description="En reparación" color="#f59e0b" delay={0.15} />
+        <StatCard icon={Monitor} value={kpis.total} label="Total" description="Equipos registrados" color="#0FDBF2" delay={0} />
+        <StatCard icon={UserCheck} value={kpis.asignados} label="Asignados" description="Con usuario asignado" color="#10b981" delay={0.05} />
+        <StatCard icon={Info} value={kpis.disponibles} label="Disponibles" description="Sin asignar" color="#34d399" delay={0.10} />
+        <StatCard icon={Cpu} value={kpis.mantenimiento} label="Mantenimiento" description="En reparación" color="#f59e0b" delay={0.15} />
       </div>
 
-      {/* Filters */}
       <div className="card-premium p-4 animate-fade-in-up stagger-2">
-        <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3">
-          <div className="flex items-center gap-2 flex-1 rounded-xl border border-white/8 bg-white/[0.03] px-3 py-2.5 transition-all focus-within:border-ctp-cyan/40 focus-within:bg-white/[0.06]">
-            <svg className="w-4 h-4 text-text-muted shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" /></svg>
-            <input
-              type="text"
-              placeholder="Buscar por código, serial, marca o usuario..."
-              value={search}
-              onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-              className="bg-transparent border-none outline-none text-sm w-full"
-            />
-          </div>
-          <select className="select-dark text-sm min-w-[150px]" value={fTipo} onChange={(e) => { setFTipo(e.target.value); setPage(1); }}>
-            <option value="">Todos los tipos</option>
-            {TIPOS.map((t) => <option key={t} value={t}>{t}</option>)}
-          </select>
-          <select className="select-dark text-sm min-w-[150px]" value={fMarca} onChange={(e) => { setFMarca(e.target.value); setPage(1); }}>
-            <option value="">Todas las marcas</option>
-            {MARCAS.map((m) => <option key={m} value={m}>{m}</option>)}
-          </select>
-          <select className="select-dark text-sm min-w-[160px]" value={fEstado} onChange={(e) => { setFEstado(e.target.value); setPage(1); }}>
-            <option value="">Todos los estados</option>
-            {ESTADOS.map((e) => <option key={e} value={e}>{e}</option>)}
-          </select>
-          <select className="select-dark text-sm min-w-[180px]" value={fUbicacion} onChange={(e) => { setFUbicacion(e.target.value); setPage(1); }}>
-            <option value="">Todas las ubicaciones</option>
-            {UBICACIONES.map((u) => <option key={u} value={u}>{u}</option>)}
-          </select>
-          <select className="select-dark text-sm min-w-[180px]" value={fUsuario} onChange={(e) => { setFUsuario(e.target.value); setPage(1); }}>
-            <option value="">Todos los usuarios</option>
-            {usuarios.map((u) => <option key={u.id} value={u.id}>{u.nombre} {u.apellido}</option>)}
-          </select>
-          {hasFilters && (
-            <button onClick={clearFilters} className="btn-ghost text-xs shrink-0">
-              Limpiar filtros
-            </button>
-          )}
-        </div>
+        <FilterBar
+          search={search}
+          onSearchChange={(v) => { setSearch(v); setPage(1); }}
+          searchPlaceholder="Buscar por código, serial, marca o usuario"
+          filters={[
+            { key: "tipo", value: fTipo, onChange: (v) => { setFTipo(v); setPage(1); }, placeholder: "Todos los tipos", options: TIPOS },
+            { key: "marca", value: fMarca, onChange: (v) => { setFMarca(v); setPage(1); }, placeholder: "Todas las marcas", options: MARCAS },
+            { key: "estado", value: fEstado, onChange: (v) => { setFEstado(v); setPage(1); }, placeholder: "Todos los estados", options: ESTADOS },
+            { key: "ubicacion", value: fUbicacion, onChange: (v) => { setFUbicacion(v); setPage(1); }, placeholder: "Todas las ubicaciones", options: UBICACIONES },
+            { key: "usuario", value: fUsuario, onChange: (v) => { setFUsuario(v); setPage(1); }, placeholder: "Todos los usuarios", options: usuarios.map((u) => ({ value: String(u.id), label: `${u.nombre} ${u.apellido}` })) },
+          ]}
+          onClear={clearFilters}
+        />
       </div>
 
       {/* Table */}
@@ -186,23 +161,15 @@ export default function Equipos({ showToast }) {
                     </td>
                     <td><StatusBadge estado={e.estado} /></td>
                     <td>
-                      <div className="flex items-center justify-end gap-1">
-                        <button
-                          className="p-2 rounded-lg text-text-muted hover:text-ctp-cyan hover:bg-ctp-cyan/10 transition-all"
-                          title="Ver detalle"
-                          onClick={() => setShowDetail(e)}
-                        >
+                      <div className="table-actions">
+                        <button className="btn-icon" title="Ver detalle" onClick={() => setShowDetail(e)}>
                           <Eye size={16} />
                         </button>
-                        <button
-                          className="p-2 rounded-lg text-text-muted hover:text-warning hover:bg-warning/10 transition-all"
-                          title="Editar"
-                          onClick={() => openEdit(e)}
-                        >
+                        <button className="btn-icon edit" title="Editar" onClick={() => openEdit(e)}>
                           <Pencil size={16} />
                         </button>
                         <button
-                          className="p-2 rounded-lg text-text-muted hover:text-info hover:bg-info/10 transition-all"
+                          className="btn-icon assign"
                           title="Asignar"
                           onClick={() => {
                             setShowAssign(e);
@@ -217,11 +184,7 @@ export default function Equipos({ showToast }) {
                         >
                           <UserCheck size={16} />
                         </button>
-                        <button
-                          className="p-2 rounded-lg text-text-muted hover:text-danger hover:bg-danger/10 transition-all"
-                          title="Eliminar"
-                          onClick={() => setShowDelete(e)}
-                        >
+                        <button className="btn-icon danger" title="Eliminar" onClick={() => setShowDelete(e)}>
                           <Trash2 size={16} />
                         </button>
                       </div>
@@ -389,7 +352,7 @@ export default function Equipos({ showToast }) {
         {showDetail && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {/* Info General */}
-            <div className="rounded-xl border border-white/8 bg-white/[0.02] p-5">
+            <div className="inset-panel">
               <h6 className="flex items-center gap-2 text-sm font-bold text-text-primary mb-4">
                 <Info size={16} className="text-ctp-cyan" />
                 Información General
@@ -405,7 +368,7 @@ export default function Equipos({ showToast }) {
             </div>
 
             {/* Info Técnica */}
-            <div className="rounded-xl border border-white/8 bg-white/[0.02] p-5">
+            <div className="inset-panel">
               <h6 className="flex items-center gap-2 text-sm font-bold text-text-primary mb-4">
                 <Cpu size={16} className="text-ctp-cyan" />
                 Información Técnica
@@ -419,7 +382,7 @@ export default function Equipos({ showToast }) {
             </div>
 
             {/* Asignación */}
-            <div className="rounded-xl border border-white/8 bg-white/[0.02] p-5">
+            <div className="inset-panel">
               <h6 className="flex items-center gap-2 text-sm font-bold text-text-primary mb-4">
                 <User size={16} className="text-ctp-cyan" />
                 Asignación
@@ -432,7 +395,7 @@ export default function Equipos({ showToast }) {
             </div>
 
             {/* Garantía y Compra */}
-            <div className="rounded-xl border border-white/8 bg-white/[0.02] p-5">
+            <div className="inset-panel">
               <h6 className="flex items-center gap-2 text-sm font-bold text-text-primary mb-4">
                 <ShieldCheck size={16} className="text-ctp-cyan" />
                 Garantía y Compra

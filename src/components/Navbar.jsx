@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, Search, Bell, ChevronDown, User, Settings, LogOut } from "lucide-react";
+import { Menu, Search, Bell, ChevronDown, User, Settings, LogOut, PanelLeftOpen, PanelLeftClose } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 
 const routeConfig = {
@@ -39,14 +39,15 @@ export default function Navbar({ onToggleSidebar, sidebarOpen }) {
   ];
 
   return (
-    <header className="sticky top-0 z-30 h-16 flex items-center gap-4 px-4 lg:px-6 border-b border-white/5"
-      style={{ background: "rgba(9,1,38,0.85)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" }}>
+    <header className="sticky top-0 z-30 h-16 flex items-center gap-4 px-4 lg:px-6 border-b border-white/5 navbar-ctp">
       <button
         onClick={onToggleSidebar}
-        className="lg:hidden p-2 rounded-lg hover:bg-white/5 text-text-secondary hover:text-text-primary transition-all"
+        className="nav-icon-btn"
         aria-label={sidebarOpen ? "Cerrar menú" : "Abrir menú"}
+        title={sidebarOpen ? "Cerrar menú" : "Abrir menú"}
       >
-        <Menu size={20} />
+        <span className="lg:hidden"><Menu size={20} /></span>
+        <span className="hidden lg:inline-flex">{sidebarOpen ? <PanelLeftClose size={20} /> : <PanelLeftOpen size={20} />}</span>
       </button>
 
       <div className="hidden lg:flex items-center gap-2 text-sm">
@@ -63,11 +64,10 @@ export default function Navbar({ onToggleSidebar, sidebarOpen }) {
 
       <div className="flex-1" />
 
-      <div className={`hidden md:flex items-center gap-2 rounded-xl border transition-all duration-200 px-3 py-2 ${
-        searchFocused
-          ? "border-ctp-cyan/40 bg-white/[0.06] shadow-[0_0_15px_rgba(15,219,242,0.08)]"
-          : "border-white/8 bg-white/[0.03]"
-      }`} style={{ width: 280 }}>
+      <div
+        className={`hidden md:flex search-field !min-w-0 ${searchFocused ? "border-ctp-cyan/50" : ""}`}
+        style={{ width: 280, flex: "0 0 280px" }}
+      >
         <Search size={16} className={`shrink-0 transition-colors ${searchFocused ? "text-ctp-cyan" : "text-text-muted"}`} />
         <input
           type="text"
@@ -84,7 +84,7 @@ export default function Navbar({ onToggleSidebar, sidebarOpen }) {
       <div ref={notifRef} className="relative">
         <button
           onClick={() => setShowNotifications(!showNotifications)}
-          className="relative p-2 rounded-xl hover:bg-white/5 text-text-secondary hover:text-text-primary transition-all"
+          className="nav-icon-btn relative"
           aria-label="Notificaciones"
         >
           <Bell size={20} />
@@ -92,7 +92,7 @@ export default function Navbar({ onToggleSidebar, sidebarOpen }) {
         </button>
 
         {showNotifications && (
-          <div className="absolute right-0 top-full mt-2 w-80 rounded-2xl border border-border-subtle bg-ctp-dark/95 backdrop-blur-xl shadow-2xl animate-scale-in overflow-hidden">
+          <div className="absolute right-0 top-full mt-2 w-80 rounded-2xl dropdown-panel animate-scale-in overflow-hidden">
             <div className="px-4 py-3 border-b border-white/5 flex items-center justify-between">
               <span className="text-sm font-semibold text-text-primary">Notificaciones</span>
               <span className="text-[10px] font-bold text-ctp-cyan bg-ctp-cyan/10 rounded-full px-2 py-0.5">{notifications.length}</span>
@@ -120,7 +120,7 @@ export default function Navbar({ onToggleSidebar, sidebarOpen }) {
       <div ref={userMenuRef} className="relative">
         <button
           onClick={() => setShowUserMenu(!showUserMenu)}
-          className="flex items-center gap-2.5 p-1.5 pr-3 rounded-xl hover:bg-white/5 transition-all"
+          className="nav-icon-btn flex items-center gap-2.5 !w-auto !h-auto pr-3"
         >
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-ctp-cyan to-ctp-purple flex items-center justify-center text-white text-xs font-bold">
             AT
@@ -133,7 +133,7 @@ export default function Navbar({ onToggleSidebar, sidebarOpen }) {
         </button>
 
         {showUserMenu && (
-          <div className="absolute right-0 top-full mt-2 w-56 rounded-2xl border border-border-subtle bg-ctp-dark/95 backdrop-blur-xl shadow-2xl animate-scale-in overflow-hidden">
+          <div className="absolute right-0 top-full mt-2 w-56 rounded-2xl dropdown-panel animate-scale-in overflow-hidden">
             <div className="px-4 py-3 border-b border-white/5">
               <div className="text-sm font-semibold text-text-primary">Administrador TI</div>
               <div className="text-xs text-text-muted">admin.ti@ctpmedica.com</div>

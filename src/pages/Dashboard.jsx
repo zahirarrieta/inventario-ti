@@ -30,7 +30,7 @@ const COLORS = ["#0FDBF2", "#023859", "#a855f7", "#10b981", "#f59e0b", "#ef4444"
 const CustomTooltip = ({ active, payload }) => {
   if (!active || !payload?.length) return null;
   return (
-    <div className="px-3 py-2 rounded-xl text-xs font-medium" style={{ background: "rgba(9,1,38,0.95)", border: "1px solid rgba(15,219,242,0.2)", backdropFilter: "blur(10px)" }}>
+    <div className="px-3 py-2 rounded-xl text-xs font-medium" style={{ background: "#1a1238", border: "1px solid rgba(15,219,242,0.22)" }}>
       <span className="text-text-primary">{payload[0].name}: </span>
       <span className="text-ctp-cyan font-bold">{payload[0].value}</span>
     </div>
@@ -52,10 +52,6 @@ export default function Dashboard() {
     ];
     return all.slice(0, 8);
   }, [equipos, monitores]);
-
-  const sparkEquipos = useMemo(() => equipos.slice(0, 8).map((_, i) => ({ v: 15 + Math.sin(i) * 8 + i * 2 })), [equipos]);
-  const sparkMonitores = useMemo(() => monitores.slice(0, 8).map((_, i) => ({ v: 10 + Math.cos(i) * 5 + i * 1.5 })), [monitores]);
-  const sparkImpresoras = useMemo(() => impresoras.slice(0, 8).map((_, i) => ({ v: 5 + Math.sin(i + 1) * 3 + i })), [impresoras]);
 
   const statusData = [
     { name: "Activos", value: equipos.filter((e) => e.estado === "Activo").length + monitores.filter((m) => m.estado === "Activo").length + impresoras.filter((i) => i.estado === "Activo").length },
@@ -83,10 +79,10 @@ export default function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard icon={Box} value={stats.totalActivos} label="Total Activos" description="Todos los registros" color="#0FDBF2" trend="+12.5%" trendDir="up" sparkData={sparkEquipos} delay={0} />
-        <StatCard icon={Monitor} value={stats.equipos} label="Equipos" description="Computadores y portátiles" color="#a855f7" sparkData={sparkMonitores} delay={0.05} />
-        <StatCard icon={Monitor} value={stats.monitores} label="Monitores" description="Pantallas" color="#023859" sparkData={sparkMonitores} delay={0.10} />
-        <StatCard icon={Printer} value={stats.impresoras} label="Impresoras" description="Dispositivos" color="#10b981" sparkData={sparkImpresoras} delay={0.15} />
+        <StatCard icon={Box} value={stats.totalActivos} label="Total Activos" description="Todos los registros" color="#0FDBF2" trend="+12.5%" trendDir="up" delay={0} />
+        <StatCard icon={Monitor} value={stats.equipos} label="Equipos" description="Computadores y portátiles" color="#a855f7" delay={0.05} />
+        <StatCard icon={Monitor} value={stats.monitores} label="Monitores" description="Pantallas" color="#0FDBF2" delay={0.10} />
+        <StatCard icon={Printer} value={stats.impresoras} label="Impresoras" description="Dispositivos" color="#10b981" delay={0.15} />
         <StatCard icon={Keyboard} value={stats.perifericos} label="Periféricos" description="Accesorios" color="#f59e0b" delay={0.20} />
         <StatCard icon={Wrench} value={stats.enMantenimiento} label="Mantenimiento" description="En reparación" color="#ef4444" delay={0.25} />
         <StatCard icon={Users} value={stats.usuarios} label="Usuarios" description="Activos" color="#3b82f6" delay={0.30} />

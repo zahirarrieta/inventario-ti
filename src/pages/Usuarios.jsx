@@ -143,7 +143,7 @@ export default function Usuarios({ showToast }) {
   };
 
   return (
-    <div className="p-6 animate-fade-in">
+    <div className="space-y-6 animate-fade-in">
       <PageHeader
         title="Usuarios"
         subtitle="Gestión de usuarios y asignación de activos"
@@ -152,7 +152,7 @@ export default function Usuarios({ showToast }) {
         actionIcon={Users}
       />
 
-      <div className="card-premium p-4 border-b border-white/5 mb-4 animate-fade-in-up">
+      <div className="card-premium p-4 animate-fade-in-up">
         <FilterBar
           search={search}
           onSearchChange={(val) => {
@@ -267,28 +267,10 @@ export default function Usuarios({ showToast }) {
                         <StatusBadge estado={u.estado} />
                       </td>
                       <td>
-                        <div className="flex items-center gap-1">
-                          <button
-                            className="p-1.5 rounded-lg text-text-muted hover:text-ctp-cyan hover:bg-ctp-cyan/10 transition-all"
-                            title="Ver detalle"
-                            onClick={() => setShowDetail(u)}
-                          >
-                            <Eye size={15} />
-                          </button>
-                          <button
-                            className="p-1.5 rounded-lg text-text-muted hover:text-warning hover:bg-warning/10 transition-all"
-                            title="Editar"
-                            onClick={() => openEdit(u)}
-                          >
-                            <Pencil size={15} />
-                          </button>
-                          <button
-                            className="p-1.5 rounded-lg text-text-muted hover:text-danger hover:bg-danger/10 transition-all"
-                            title="Eliminar"
-                            onClick={() => setShowDelete(u)}
-                          >
-                            <Trash2 size={15} />
-                          </button>
+                        <div className="table-actions">
+                          <button className="btn-icon" title="Ver detalle" onClick={() => setShowDetail(u)}><Eye size={16} /></button>
+                          <button className="btn-icon edit" title="Editar" onClick={() => openEdit(u)}><Pencil size={16} /></button>
+                          <button className="btn-icon danger" title="Eliminar" onClick={() => setShowDelete(u)}><Trash2 size={16} /></button>
                         </div>
                       </td>
                     </tr>
@@ -454,7 +436,7 @@ export default function Usuarios({ showToast }) {
         {showDetail && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Personal Info */}
-            <div className="rounded-xl border border-white/5 bg-white/[0.02] p-4">
+            <div className="inset-panel">
               <h6 className="flex items-center gap-2 text-sm font-semibold text-text-primary mb-3">
                 <Users size={16} className="text-ctp-cyan" />
                 Información Personal
@@ -492,7 +474,7 @@ export default function Usuarios({ showToast }) {
             </div>
 
             {/* Laboral Info */}
-            <div className="rounded-xl border border-white/5 bg-white/[0.02] p-4">
+            <div className="inset-panel">
               <h6 className="flex items-center gap-2 text-sm font-semibold text-text-primary mb-3">
                 <Box size={16} className="text-ctp-cyan" />
                 Información Laboral

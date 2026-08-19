@@ -60,17 +60,17 @@ export default function Mantenimientos({ showToast }) {
     : "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/25";
 
   return (
-    <div className="p-6 animate-fade-in">
+    <div className="space-y-6 animate-fade-in">
       <PageHeader title="Mantenimientos" subtitle="Gestión de mantenimientos preventivos y correctivos" actionLabel="Nuevo mantenimiento" onAction={openNew} actionIcon={Wrench} />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard icon={CalendarCheck} value={statsMtto.programados} label="Programados" color="#3b82f6" delay={0} />
         <StatCard icon={Clock} value={statsMtto.enProceso} label="En proceso" color="#f59e0b" delay={0.05} />
         <StatCard icon={CheckCircle} value={statsMtto.finalizados} label="Finalizados" color="#10b981" delay={0.1} />
         <StatCard icon={ArrowRightCircle} value={statsMtto.total} label="Total registros" color="#a855f7" delay={0.15} />
       </div>
 
-      <div className="card-premium p-4 border-b border-white/5 mb-4 animate-fade-in-up">
+      <div className="card-premium p-4 animate-fade-in-up">
         <FilterBar
           search={search}
           onSearchChange={(val) => { setSearch(val); setPage(1); }}
@@ -138,28 +138,10 @@ export default function Mantenimientos({ showToast }) {
                       <span className="text-xs text-text-muted">{m.proximaFecha || "-"}</span>
                     </td>
                     <td>
-                      <div className="flex items-center gap-1">
-                        <button
-                          className="p-1.5 rounded-lg text-text-muted hover:text-ctp-cyan hover:bg-ctp-cyan/10 transition-all"
-                          title="Ver detalle"
-                          onClick={() => setShowDetail(m)}
-                        >
-                          <Eye size={15} />
-                        </button>
-                        <button
-                          className="p-1.5 rounded-lg text-text-muted hover:text-warning hover:bg-warning/10 transition-all"
-                          title="Editar"
-                          onClick={() => openEdit(m)}
-                        >
-                          <Pencil size={15} />
-                        </button>
-                        <button
-                          className="p-1.5 rounded-lg text-text-muted hover:text-danger hover:bg-danger/10 transition-all"
-                          title="Eliminar"
-                          onClick={() => setShowDelete(m)}
-                        >
-                          <Trash2 size={15} />
-                        </button>
+                      <div className="table-actions">
+                        <button className="btn-icon" title="Ver detalle" onClick={() => setShowDetail(m)}><Eye size={16} /></button>
+                        <button className="btn-icon edit" title="Editar" onClick={() => openEdit(m)}><Pencil size={16} /></button>
+                        <button className="btn-icon danger" title="Eliminar" onClick={() => setShowDelete(m)}><Trash2 size={16} /></button>
                       </div>
                     </td>
                   </tr>
@@ -235,7 +217,7 @@ export default function Mantenimientos({ showToast }) {
       <Modal show={!!showDetail} onClose={() => setShowDetail(null)} title="Detalle del mantenimiento" size="lg">
         {showDetail && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="rounded-xl border border-white/5 bg-white/[0.02] p-4">
+            <div className="inset-panel">
               <h6 className="flex items-center gap-2 text-sm font-semibold text-text-primary mb-3">
                 <Wrench size={16} className="text-ctp-cyan" />
                 Información del Mantenimiento
@@ -248,7 +230,7 @@ export default function Mantenimientos({ showToast }) {
                 <div className="flex justify-between text-sm items-center"><span className="text-text-muted">Estado:</span><StatusBadge estado={showDetail.estado} /></div>
               </div>
             </div>
-            <div className="rounded-xl border border-white/5 bg-white/[0.02] p-4">
+            <div className="inset-panel">
               <h6 className="flex items-center gap-2 text-sm font-semibold text-text-primary mb-3">
                 <Clock size={16} className="text-ctp-cyan" />
                 Detalles
@@ -259,7 +241,7 @@ export default function Mantenimientos({ showToast }) {
                 <div className="flex justify-between text-sm"><span className="text-text-muted">Próximo mtto.:</span><span className="text-text-secondary">{showDetail.proximaFecha || "N/A"}</span></div>
               </div>
             </div>
-            <div className="md:col-span-2 rounded-xl border border-white/5 bg-white/[0.02] p-4">
+            <div className="md:col-span-2 inset-panel">
               <h6 className="flex items-center gap-2 text-sm font-semibold text-text-primary mb-3">
                 <Eye size={16} className="text-ctp-cyan" />
                 Descripción

@@ -53,7 +53,7 @@ function AppInner() {
   const sidebarWidth = isMobile ? 0 : (sidebarCollapsed ? SIDEBAR_COLLAPSED_WIDTH : SIDEBAR_WIDTH);
 
   return (
-    <div className="flex min-h-screen bg-ctp-dark">
+    <div className="flex min-h-screen">
       {isMobile && sidebarOpen && (
         <div
           className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity animate-fade-in"
@@ -62,14 +62,13 @@ function AppInner() {
       )}
 
       <aside
-        className={`fixed top-0 left-0 h-full z-50 transition-all duration-300 ease-in-out ${
+        className={`sidebar-ctp fixed top-0 left-0 h-full z-50 overflow-visible transition-all duration-300 ease-in-out ${
           isMobile
             ? sidebarOpen ? "translate-x-0" : "-translate-x-full"
             : ""
         }`}
         style={{
           width: isMobile ? 260 : (sidebarCollapsed ? SIDEBAR_COLLAPSED_WIDTH : SIDEBAR_WIDTH),
-          background: "linear-gradient(180deg, #090126 0%, #210140 100%)",
         }}
       >
         <Sidebar

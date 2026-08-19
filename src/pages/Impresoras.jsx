@@ -114,16 +114,10 @@ export default function Impresoras({ showToast }) {
                   <td>{imp.contador.toLocaleString()}</td>
                   <td><StatusBadge estado={imp.estado} /></td>
                   <td>
-                    <div className="flex items-center gap-1">
-                      <button onClick={() => setShowDetail(imp)} className="p-1.5 rounded-lg hover:bg-ctp-cyan/10 text-text-muted hover:text-ctp-cyan transition-colors" title="Ver detalle">
-                        <Eye size={15} />
-                      </button>
-                      <button onClick={() => openEdit(imp)} className="p-1.5 rounded-lg hover:bg-info/10 text-text-muted hover:text-info transition-colors" title="Editar">
-                        <Pencil size={15} />
-                      </button>
-                      <button onClick={() => setShowDelete(imp)} className="p-1.5 rounded-lg hover:bg-danger/10 text-text-muted hover:text-danger transition-colors" title="Eliminar">
-                        <Trash2 size={15} />
-                      </button>
+                    <div className="table-actions">
+                      <button onClick={() => setShowDetail(imp)} className="btn-icon" title="Ver detalle"><Eye size={16} /></button>
+                      <button onClick={() => openEdit(imp)} className="btn-icon edit" title="Editar"><Pencil size={16} /></button>
+                      <button onClick={() => setShowDelete(imp)} className="btn-icon danger" title="Eliminar"><Trash2 size={16} /></button>
                     </div>
                   </td>
                 </tr>
@@ -190,7 +184,7 @@ export default function Impresoras({ showToast }) {
       <Modal show={!!showDetail} onClose={() => setShowDetail(null)} title="Detalle de impresora" size="lg">
         {showDetail && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div className="card-premium p-5 space-y-3">
+            <div className="inset-panel space-y-3">
               <h6 className="flex items-center gap-2 text-sm font-bold text-text-primary">
                 <Printer size={16} className="text-ctp-cyan" /> Información General
               </h6>
@@ -201,7 +195,7 @@ export default function Impresoras({ showToast }) {
               <div className="flex justify-between items-center py-1.5 border-b border-white/5"><span className="text-xs text-text-muted">Tipo</span><span className="text-sm text-text-secondary">{showDetail.tipo}</span></div>
               <div className="flex justify-between items-center py-1.5"><span className="text-xs text-text-muted">Estado</span><StatusBadge estado={showDetail.estado} /></div>
             </div>
-            <div className="card-premium p-5 space-y-3">
+            <div className="inset-panel space-y-3">
               <h6 className="flex items-center gap-2 text-sm font-bold text-text-primary">
                 <Printer size={16} className="text-ctp-cyan" /> Red y Ubicación
               </h6>
