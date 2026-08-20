@@ -21,7 +21,7 @@ export default function Pagination({ page, totalPages, totalItems, itemsPerPage,
   };
 
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-3.5 border-t border-white/5">
+    <div className="table-footer flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-3.5">
       <span className="text-xs text-text-muted">
         Mostrando <span className="font-semibold text-text-secondary">{start}</span> a <span className="font-semibold text-text-secondary">{end}</span> de <span className="font-semibold text-text-secondary">{totalItems}</span>
       </span>

@@ -53,7 +53,7 @@ function AppInner() {
   const sidebarWidth = isMobile ? 0 : (sidebarCollapsed ? SIDEBAR_COLLAPSED_WIDTH : SIDEBAR_WIDTH);
 
   return (
-    <div className="flex min-h-screen">
+    <div className="app-shell flex min-h-screen">
       {isMobile && sidebarOpen && (
         <div
           className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity animate-fade-in"
@@ -79,7 +79,7 @@ function AppInner() {
       </aside>
 
       <div
-        className="flex flex-col flex-1 min-h-screen transition-all duration-300 ease-in-out"
+        className="app-main flex flex-col flex-1 min-h-screen transition-all duration-300 ease-in-out"
         style={{ marginLeft: sidebarWidth }}
       >
         <Navbar onToggleSidebar={toggleSidebar} sidebarOpen={isMobile ? sidebarOpen : !sidebarCollapsed} />

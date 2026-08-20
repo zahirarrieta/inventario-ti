@@ -2,7 +2,10 @@ import { useState, useEffect } from "react";
 import ThemeContext from "../context/ThemeContext";
 
 export function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState(() => {
+    const saved = localStorage.getItem("ctp-theme");
+    return saved === "dark" || saved === "light" ? saved : "light";
+  });
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
