@@ -127,7 +127,7 @@ export default function Navbar({ onToggleSidebar, sidebarOpen }) {
           onClick={() => setShowUserMenu(!showUserMenu)}
           className="nav-icon-btn flex items-center gap-2.5 !w-auto !h-auto pr-3"
         >
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-ctp-cyan to-ctp-purple flex items-center justify-center text-white text-xs font-bold">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-ctp-cyan to-ctp-blue flex items-center justify-center text-white text-xs font-bold">
             AT
           </div>
           <div className="hidden lg:block text-left">

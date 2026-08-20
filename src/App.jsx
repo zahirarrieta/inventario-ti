@@ -1,5 +1,6 @@
 ﻿import { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
 import { ThemeProvider } from "./components/ThemeProvider";
 
 import Sidebar from "./components/Sidebar";
@@ -18,11 +19,25 @@ import Mantenimientos from "./pages/Mantenimientos";
 const SIDEBAR_WIDTH = 260;
 const SIDEBAR_COLLAPSED_WIDTH = 80;
 
+function PageWrapper({ children }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -8 }}
+      transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 function AppInner() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
   const [toast, setToast] = useState(null);
+  const location = useLocation();
 
   useEffect(() => {
     const handleResize = () => {
@@ -85,17 +100,19 @@ function AppInner() {
         <Navbar onToggleSidebar={toggleSidebar} sidebarOpen={isMobile ? sidebarOpen : !sidebarCollapsed} />
 
         <main className="flex-1 p-4 lg:p-6 overflow-auto">
-          <Routes>
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
-            <Route path="/dashboard" element={<Dashboard showToast={showToast} />} />
-            <Route path="/equipos" element={<Equipos showToast={showToast} />} />
-            <Route path="/monitores" element={<Monitores showToast={showToast} />} />
-            <Route path="/impresoras" element={<Impresoras showToast={showToast} />} />
-            <Route path="/perifericos" element={<Perifericos showToast={showToast} />} />
-            <Route path="/software" element={<Software showToast={showToast} />} />
-            <Route path="/usuarios" element={<Usuarios showToast={showToast} />} />
-            <Route path="/mantenimientos" element={<Mantenimientos showToast={showToast} />} />
-          </Routes>
+          <AnimatePresence mode="wait">
+            <Routes location={location} key={location.pathname}>
+              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              <Route path="/dashboard" element={<PageWrapper><Dashboard showToast={showToast} /></PageWrapper>} />
+              <Route path="/equipos" element={<PageWrapper><Equipos showToast={showToast} /></PageWrapper>} />
+              <Route path="/monitores" element={<PageWrapper><Monitores showToast={showToast} /></PageWrapper>} />
+              <Route path="/impresoras" element={<PageWrapper><Impresoras showToast={showToast} /></PageWrapper>} />
+              <Route path="/perifericos" element={<PageWrapper><Perifericos showToast={showToast} /></PageWrapper>} />
+              <Route path="/software" element={<PageWrapper><Software showToast={showToast} /></PageWrapper>} />
+              <Route path="/usuarios" element={<PageWrapper><Usuarios showToast={showToast} /></PageWrapper>} />
+              <Route path="/mantenimientos" element={<PageWrapper><Mantenimientos showToast={showToast} /></PageWrapper>} />
+            </Routes>
+          </AnimatePresence>
         </main>
       </div>
 

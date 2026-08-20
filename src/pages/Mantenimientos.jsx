@@ -67,7 +67,7 @@ export default function Mantenimientos({ showToast }) {
         <StatCard icon={CalendarCheck} value={statsMtto.programados} label="Programados" color="#3b82f6" delay={0} />
         <StatCard icon={Clock} value={statsMtto.enProceso} label="En proceso" color="#f59e0b" delay={0.05} />
         <StatCard icon={CheckCircle} value={statsMtto.finalizados} label="Finalizados" color="#10b981" delay={0.1} />
-        <StatCard icon={ArrowRightCircle} value={statsMtto.total} label="Total registros" color="#a855f7" delay={0.15} />
+        <StatCard icon={ArrowRightCircle} value={statsMtto.total} label="Total registros" color="#023859" delay={0.15} />
       </div>
 
       <div className="card-premium p-4 animate-fade-in-up">

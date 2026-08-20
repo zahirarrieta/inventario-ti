@@ -11,7 +11,7 @@ export default function ThemeToggle() {
       className="relative w-16 h-8 rounded-full border transition-all duration-300 flex items-center shrink-0 px-1"
       style={{
         background: isDark
-          ? "linear-gradient(135deg, #1c1542, #0e0133)"
+          ? "linear-gradient(135deg, #152a42, #081728)"
           : "linear-gradient(135deg, #fff7ed, #fef3c7)",
         borderColor: isDark ? "rgba(15,219,242,0.35)" : "rgba(245,158,11,0.40)",
       }}
