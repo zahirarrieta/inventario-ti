@@ -8,7 +8,7 @@ import ConfirmModal from "../components/ConfirmModal";
 import Pagination from "../components/Pagination";
 import StatCard from "../components/StatCard";
 import FilterBar from "../components/FilterBar";
-import ButtonSpinner from "../components/ButtonSpinner";
+import SavingOverlay from "../components/SavingOverlay";
 import { Monitor, Eye, Pencil, Trash2, UserCheck, Info, Cpu, User, ShieldCheck, Plus, Search, Laptop } from "lucide-react";
 
 const ESTADOS = ["Activo", "Disponible", "En mantenimiento", "Dado de baja"];
@@ -227,7 +227,7 @@ export default function Equipos({ showToast }) {
           <>
             <button className="btn-ghost" onClick={() => setShowForm(false)} disabled={saving}>Cancelar</button>
             <button className="btn-ctp" onClick={handleSave} disabled={saving}>
-              {saving ? <><ButtonSpinner size={16} /> Guardando...</> : "Guardar equipo"}
+              Guardar equipo
             </button>
           </>
         }
@@ -440,7 +440,7 @@ export default function Equipos({ showToast }) {
           <>
             <button className="btn-ghost" onClick={() => setShowAssign(null)} disabled={saving}>Cancelar</button>
             <button className="btn-ctp" onClick={handleAssign} disabled={saving}>
-              {saving ? <><ButtonSpinner size={16} /> Asignando...</> : <><UserCheck size={16} /> Asignar</>}
+              <UserCheck size={16} /> Asignar
             </button>
           </>
         }
@@ -487,6 +487,7 @@ export default function Equipos({ showToast }) {
       </Modal>
 
       <ConfirmModal show={!!showDelete} onClose={() => setShowDelete(null)} onConfirm={handleDelete} saving={saving} message={`No se puede deshacer la eliminación de ${showDelete?.codigo} — ${showDelete?.marca} ${showDelete?.modelo}.`} />
+      <SavingOverlay show={saving} type={showDelete ? "delete" : showAssign ? "assign" : "save"} />
     </div>
   );
 }

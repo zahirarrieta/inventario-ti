@@ -8,7 +8,7 @@ import EmptyState from "../components/EmptyState";
 import ConfirmModal from "../components/ConfirmModal";
 import Pagination from "../components/Pagination";
 import FilterBar from "../components/FilterBar";
-import ButtonSpinner from "../components/ButtonSpinner";
+import SavingOverlay from "../components/SavingOverlay";
 import { Eye, Pencil, Trash2, Monitor as MonitorIcon, Users, CheckCircle, Wrench } from "lucide-react";
 
 const ESTADOS = ["Activo", "Disponible", "En mantenimiento", "Dado de baja"];
@@ -145,7 +145,7 @@ export default function Monitores({ showToast }) {
           <>
             <button className="btn-ghost" onClick={() => setShowForm(false)} disabled={saving}>Cancelar</button>
             <button className="btn-ctp" onClick={handleSave} disabled={saving}>
-              {saving ? <><ButtonSpinner size={16} /> Guardando...</> : "Guardar"}
+              Guardar
             </button>
           </>
         }
@@ -253,6 +253,7 @@ export default function Monitores({ showToast }) {
       </Modal>
 
       <ConfirmModal show={!!showDelete} onClose={() => setShowDelete(null)} onConfirm={handleDelete} saving={saving} message={`Eliminar monitor ${showDelete?.codigo}?`} />
+      <SavingOverlay show={saving} type={showDelete ? "delete" : "save"} />
     </div>
   );
 }

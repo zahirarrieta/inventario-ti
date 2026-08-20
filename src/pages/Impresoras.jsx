@@ -4,7 +4,7 @@ import Modal from "../components/Modal";
 import PageHeader from "../components/PageHeader";
 import StatusBadge from "../components/StatusBadge";
 import EmptyState from "../components/EmptyState";
-import ButtonSpinner from "../components/ButtonSpinner";
+import SavingOverlay from "../components/SavingOverlay";
 import ConfirmModal from "../components/ConfirmModal";
 import Pagination from "../components/Pagination";
 import FilterBar from "../components/FilterBar";
@@ -137,7 +137,7 @@ export default function Impresoras({ showToast }) {
       </div>
 
       <Modal show={showForm} onClose={() => setShowForm(false)} title={editingId ? "Editar impresora" : "Nueva impresora"} size="lg"
-        footer={<><button className="btn-ghost" onClick={() => setShowForm(false)} disabled={saving}>Cancelar</button><button className="btn-ctp" onClick={handleSave} disabled={saving}>{saving ? <><ButtonSpinner size={16} /> Guardando...</> : "Guardar"}</button></>}>
+        footer={<><button className="btn-ghost" onClick={() => setShowForm(false)} disabled={saving}>Cancelar</button><button className="btn-ctp" onClick={handleSave} disabled={saving}>Guardar</button></>}>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <label className="form-label">Código *</label>
@@ -218,6 +218,7 @@ export default function Impresoras({ showToast }) {
       </Modal>
 
       <ConfirmModal show={!!showDelete} onClose={() => setShowDelete(null)} onConfirm={handleDelete} saving={saving} message={`¿Eliminar impresora ${showDelete?.codigo}? Esta acción no se puede deshacer.`} />
+      <SavingOverlay show={saving} type={showDelete ? "delete" : "save"} />
     </div>
   );
 }

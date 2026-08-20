@@ -4,7 +4,7 @@ import Modal from "../components/Modal";
 import PageHeader from "../components/PageHeader";
 import StatusBadge from "../components/StatusBadge";
 import EmptyState from "../components/EmptyState";
-import ButtonSpinner from "../components/ButtonSpinner";
+import SavingOverlay from "../components/SavingOverlay";
 import ConfirmModal from "../components/ConfirmModal";
 import Pagination from "../components/Pagination";
 import FilterBar from "../components/FilterBar";
@@ -170,7 +170,7 @@ export default function Mantenimientos({ showToast }) {
           <>
             <button className="btn-ghost" onClick={() => setShowForm(false)} disabled={saving}>Cancelar</button>
             <button className="btn-ctp" onClick={handleSave} disabled={saving}>
-              {saving ? <><ButtonSpinner size={16} /> Guardando...</> : `${editingId ? "Actualizar" : "Crear"} mantenimiento`}
+              {editingId ? "Actualizar" : "Crear"} mantenimiento
             </button>
           </>
         }
@@ -263,6 +263,7 @@ export default function Mantenimientos({ showToast }) {
       </Modal>
 
       <ConfirmModal show={!!showDelete} onClose={() => setShowDelete(null)} onConfirm={handleDelete} saving={saving} message={`No se puede deshacer la eliminación de ${showDelete?.codigo}.`} />
+      <SavingOverlay show={saving} type={showDelete ? "delete" : "save"} />
     </div>
   );
 }

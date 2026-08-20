@@ -6,13 +6,19 @@ import { X } from "lucide-react";
 const overlayVariants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { duration: 0.15 } },
-  exit: { opacity: 0, transition: { duration: 0.1 } },
+  exit: { opacity: 0, transition: { duration: 0.05 } },
 };
 
 const modalVariants = {
-  hidden: { opacity: 0, scale: 0.95, y: 12 },
-  visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] } },
-  exit: { opacity: 0, scale: 0.97, y: 6, transition: { duration: 0.1 } },
+  hidden: { opacity: 0, scale: 0.95, y: 20 },
+  visible: {
+    opacity: 1, scale: 1, y: 0,
+    transition: { duration: 0.2, ease: [0.16, 1, 0.3, 1] },
+  },
+  exit: {
+    opacity: 0, scale: 0.97, y: 8,
+    transition: { duration: 0.05, ease: "easeIn" },
+  },
 };
 
 export default function Modal({ show, onClose, title, children, footer, size = "lg" }) {
@@ -55,8 +61,9 @@ export default function Modal({ show, onClose, title, children, footer, size = "
             <div className="modal-ctp-header">
               <h3 className="modal-ctp-title">{title}</h3>
               <motion.button
-                whileHover={{ scale: 1.1, rotate: 90 }}
-                whileTap={{ scale: 0.9 }}
+                whileHover={{ scale: 1.15, rotate: 90 }}
+                whileTap={{ scale: 0.85 }}
+                transition={{ type: "spring", stiffness: 600, damping: 20 }}
                 onClick={onClose}
                 className="modal-ctp-close w-8 h-8 rounded-lg flex items-center justify-center transition-all"
                 aria-label="Cerrar"

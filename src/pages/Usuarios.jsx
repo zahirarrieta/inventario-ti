@@ -15,7 +15,7 @@ import EmptyState from "../components/EmptyState";
 import ConfirmModal from "../components/ConfirmModal";
 import Pagination from "../components/Pagination";
 import FilterBar from "../components/FilterBar";
-import ButtonSpinner from "../components/ButtonSpinner";
+import SavingOverlay from "../components/SavingOverlay";
 import { Eye, Pencil, Trash2, Users, Box } from "lucide-react";
 
 const ESTADOS_U = ["Activo", "Inactivo"];
@@ -307,7 +307,7 @@ export default function Usuarios({ showToast }) {
               Cancelar
             </button>
             <button className="btn-ctp" onClick={handleSave} disabled={saving}>
-              {saving ? <><ButtonSpinner size={16} /> Guardando...</> : (editingId ? "Actualizar" : "Crear usuario")}
+              {editingId ? "Actualizar" : "Crear usuario"}
             </button>
           </>
         }
@@ -576,6 +576,7 @@ export default function Usuarios({ showToast }) {
         saving={saving}
         message={`Eliminar usuario ${showDelete?.nombre} ${showDelete?.apellido}?`}
       />
+      <SavingOverlay show={saving} type={showDelete ? "delete" : "save"} />
     </div>
   );
 }
