@@ -4,6 +4,7 @@ import Modal from "../components/Modal";
 import PageHeader from "../components/PageHeader";
 import StatusBadge from "../components/StatusBadge";
 import EmptyState from "../components/EmptyState";
+import ButtonSpinner from "../components/ButtonSpinner";
 import ConfirmModal from "../components/ConfirmModal";
 import Pagination from "../components/Pagination";
 import FilterBar from "../components/FilterBar";
@@ -28,6 +29,7 @@ export default function Impresoras({ showToast }) {
   const [editingId, setEditingId] = useState(null);
   const [form, setForm] = useState({ ...emptyForm });
   const [showDelete, setShowDelete] = useState(null);
+  const [saving, setSaving] = useState(false);
   const usuarios = useMemo(() => getUsuarios(), []);
 
   const filtered = useMemo(() => impresoras.filter((i) => {
@@ -48,13 +50,19 @@ export default function Impresoras({ showToast }) {
 
   const openNew = () => { setForm({ ...emptyForm }); setEditingId(null); setShowForm(true); };
   const openEdit = (imp) => { setForm({ ...imp, usuarioResponsableId: imp.usuarioResponsableId ? String(imp.usuarioResponsableId) : "" }); setEditingId(imp.id); setShowForm(true); };
-  const handleSave = () => {
+  const handleSave = async () => {
+    setSaving(true);
+    await new Promise((r) => setTimeout(r, 400));
     const data = { ...form, usuarioResponsableId: form.usuarioResponsableId ? Number(form.usuarioResponsableId) : null, contador: Number(form.contador) || 0 };
     if (editingId) { updateImpresora(editingId, data); showToast("Impresora actualizada."); }
     else { createImpresora(data); showToast("Impresora creada."); }
-    setImpresoras(getImpresoras()); setShowForm(false);
+    setImpresoras(getImpresoras()); setShowForm(false); setSaving(false);
   };
-  const handleDelete = () => { deleteImpresora(showDelete.id); setImpresoras(getImpresoras()); setShowDelete(null); showToast("Impresora eliminada.", "danger"); };
+  const handleDelete = async () => {
+    setSaving(true);
+    await new Promise((r) => setTimeout(r, 300));
+    deleteImpresora(showDelete.id); setImpresoras(getImpresoras()); setShowDelete(null); showToast("Impresora eliminada.", "danger"); setSaving(false);
+  };
   const clearFilters = () => { setSearch(""); setFMarca(""); setFTipo(""); setFEstado(""); setPage(1); };
 
   return (
@@ -62,10 +70,10 @@ export default function Impresoras({ showToast }) {
       <PageHeader title="Impresoras" subtitle="Gestión de dispositivos de impresión" actionLabel="Nueva impresora" actionIcon={Printer} onAction={openNew} />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard icon={Printer} value={totalAll} label="Total" description="Impresoras registradas" color="#0FDBF2" delay={0} />
-        <StatCard icon={Printer} value={totalActivas} label="Activas" description="En operación normal" color="#10b981" delay={0.05} />
-        <StatCard icon={Printer} value={totalBaja} label="Fuera de servicio" description="Dadas de baja" color="#ef4444" delay={0.10} />
-        <StatCard icon={Printer} value={totalMantenimiento} label="Mantenimiento" description="En reparación" color="#f59e0b" delay={0.15} />
+        <StatCard icon={Printer} value={totalAll} label="Total" description="Impresoras registradas" color="#0FDBF2" index={0} />
+        <StatCard icon={Printer} value={totalActivas} label="Activas" description="En operación normal" color="#10b981" index={1} />
+        <StatCard icon={Printer} value={totalBaja} label="Fuera de servicio" description="Dadas de baja" color="#ef4444" index={2} />
+        <StatCard icon={Printer} value={totalMantenimiento} label="Mantenimiento" description="En reparación" color="#f59e0b" index={3} />
       </div>
 
       <div className="card-premium p-4 animate-fade-in-up">
@@ -129,7 +137,7 @@ export default function Impresoras({ showToast }) {
       </div>
 
       <Modal show={showForm} onClose={() => setShowForm(false)} title={editingId ? "Editar impresora" : "Nueva impresora"} size="lg"
-        footer={<><button className="btn-ghost" onClick={() => setShowForm(false)}>Cancelar</button><button className="btn-ctp" onClick={handleSave}>Guardar</button></>}>
+        footer={<><button className="btn-ghost" onClick={() => setShowForm(false)} disabled={saving}>Cancelar</button><button className="btn-ctp" onClick={handleSave} disabled={saving}>{saving ? <><ButtonSpinner size={16} /> Guardando...</> : "Guardar"}</button></>}>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <label className="form-label">Código *</label>
@@ -209,7 +217,7 @@ export default function Impresoras({ showToast }) {
         )}
       </Modal>
 
-      <ConfirmModal show={!!showDelete} onClose={() => setShowDelete(null)} onConfirm={handleDelete} message={`¿Eliminar impresora ${showDelete?.codigo}? Esta acción no se puede deshacer.`} />
+      <ConfirmModal show={!!showDelete} onClose={() => setShowDelete(null)} onConfirm={handleDelete} saving={saving} message={`¿Eliminar impresora ${showDelete?.codigo}? Esta acción no se puede deshacer.`} />
     </div>
   );
 }

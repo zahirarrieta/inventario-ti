@@ -8,6 +8,7 @@ import EmptyState from "../components/EmptyState";
 import ConfirmModal from "../components/ConfirmModal";
 import Pagination from "../components/Pagination";
 import FilterBar from "../components/FilterBar";
+import ButtonSpinner from "../components/ButtonSpinner";
 import { Eye, Pencil, Trash2, Monitor as MonitorIcon, Users, CheckCircle, Wrench } from "lucide-react";
 
 const ESTADOS = ["Activo", "Disponible", "En mantenimiento", "Dado de baja"];
@@ -26,6 +27,7 @@ export default function Monitores({ showToast }) {
   const [editingId, setEditingId] = useState(null);
   const [form, setForm] = useState({ ...emptyForm });
   const [showDelete, setShowDelete] = useState(null);
+  const [saving, setSaving] = useState(false);
   const usuarios = useMemo(() => getUsuarios(), []);
 
   const stats = useMemo(() => ({
@@ -45,13 +47,19 @@ export default function Monitores({ showToast }) {
 
   const openNew = () => { setForm({ ...emptyForm }); setEditingId(null); setShowForm(true); };
   const openEdit = (m) => { setForm({ ...m, usuarioId: m.usuarioId ? String(m.usuarioId) : "" }); setEditingId(m.id); setShowForm(true); };
-  const handleSave = () => {
+  const handleSave = async () => {
+    setSaving(true);
+    await new Promise((r) => setTimeout(r, 400));
     const data = { ...form, usuarioId: form.usuarioId ? Number(form.usuarioId) : null };
     if (editingId) { updateMonitor(editingId, data); showToast("Monitor actualizado."); }
     else { createMonitor(data); showToast("Monitor creado."); }
-    setMonitores(getMonitores()); setShowForm(false);
+    setMonitores(getMonitores()); setShowForm(false); setSaving(false);
   };
-  const handleDelete = () => { deleteMonitor(showDelete.id); setMonitores(getMonitores()); setShowDelete(null); showToast("Monitor eliminado.", "danger"); };
+  const handleDelete = async () => {
+    setSaving(true);
+    await new Promise((r) => setTimeout(r, 300));
+    deleteMonitor(showDelete.id); setMonitores(getMonitores()); setShowDelete(null); showToast("Monitor eliminado.", "danger"); setSaving(false);
+  };
   const clearFilters = () => { setSearch(""); setFMarca(""); setFEstado(""); setPage(1); };
 
   return (
@@ -65,10 +73,10 @@ export default function Monitores({ showToast }) {
       />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard icon={MonitorIcon} value={stats.total} label="Total" description="Monitores registrados" color="#0FDBF2" delay={0} />
-        <StatCard icon={Users} value={stats.asignados} label="Asignados" description="Con usuario asignado" color="#3b82f6" delay={0.05} />
-        <StatCard icon={CheckCircle} value={stats.disponibles} label="Disponibles" description="Sin asignar" color="#10b981" delay={0.10} />
-        <StatCard icon={Wrench} value={stats.mantenimiento} label="Mantenimiento" description="En reparación" color="#f59e0b" delay={0.15} />
+        <StatCard icon={MonitorIcon} value={stats.total} label="Total" description="Monitores registrados" color="#0FDBF2" index={0} />
+        <StatCard icon={Users} value={stats.asignados} label="Asignados" description="Con usuario asignado" color="#3b82f6" index={1} />
+        <StatCard icon={CheckCircle} value={stats.disponibles} label="Disponibles" description="Sin asignar" color="#10b981" index={2} />
+        <StatCard icon={Wrench} value={stats.mantenimiento} label="Mantenimiento" description="En reparación" color="#f59e0b" index={3} />
       </div>
 
       <div className="card-premium p-4 animate-fade-in-up">
@@ -135,8 +143,10 @@ export default function Monitores({ showToast }) {
       <Modal show={showForm} onClose={() => setShowForm(false)} title={editingId ? "Editar monitor" : "Nuevo monitor"} size="lg"
         footer={
           <>
-            <button className="btn-ghost" onClick={() => setShowForm(false)}>Cancelar</button>
-            <button className="btn-ctp" onClick={handleSave}>Guardar</button>
+            <button className="btn-ghost" onClick={() => setShowForm(false)} disabled={saving}>Cancelar</button>
+            <button className="btn-ctp" onClick={handleSave} disabled={saving}>
+              {saving ? <><ButtonSpinner size={16} /> Guardando...</> : "Guardar"}
+            </button>
           </>
         }
       >
@@ -242,7 +252,7 @@ export default function Monitores({ showToast }) {
         )}
       </Modal>
 
-      <ConfirmModal show={!!showDelete} onClose={() => setShowDelete(null)} onConfirm={handleDelete} message={`Eliminar monitor ${showDelete?.codigo}?`} />
+      <ConfirmModal show={!!showDelete} onClose={() => setShowDelete(null)} onConfirm={handleDelete} saving={saving} message={`Eliminar monitor ${showDelete?.codigo}?`} />
     </div>
   );
 }

@@ -1,3 +1,5 @@
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
 export default function Pagination({ page, totalPages, totalItems, itemsPerPage, onPageChange }) {
   if (totalPages <= 1) return null;
 
@@ -26,7 +28,9 @@ export default function Pagination({ page, totalPages, totalItems, itemsPerPage,
         Mostrando <span className="font-semibold text-text-secondary">{start}</span> a <span className="font-semibold text-text-secondary">{end}</span> de <span className="font-semibold text-text-secondary">{totalItems}</span>
       </span>
       <div className="pagination-dark">
-        <button disabled={page === 1} onClick={() => onPageChange(page - 1)}>‹</button>
+        <button disabled={page === 1} onClick={() => onPageChange(page - 1)}>
+          <ChevronLeft size={14} />
+        </button>
         {getPages().map((p, i) =>
           p === "..." ? (
             <span key={`e${i}`} className="px-1 text-text-muted text-xs">…</span>
@@ -34,7 +38,9 @@ export default function Pagination({ page, totalPages, totalItems, itemsPerPage,
             <button key={p} className={p === page ? "active" : ""} onClick={() => onPageChange(p)}>{p}</button>
           )
         )}
-        <button disabled={page === totalPages} onClick={() => onPageChange(page + 1)}>›</button>
+        <button disabled={page === totalPages} onClick={() => onPageChange(page + 1)}>
+          <ChevronRight size={14} />
+        </button>
       </div>
     </div>
   );

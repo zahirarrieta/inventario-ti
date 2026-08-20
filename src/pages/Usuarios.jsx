@@ -15,6 +15,7 @@ import EmptyState from "../components/EmptyState";
 import ConfirmModal from "../components/ConfirmModal";
 import Pagination from "../components/Pagination";
 import FilterBar from "../components/FilterBar";
+import ButtonSpinner from "../components/ButtonSpinner";
 import { Eye, Pencil, Trash2, Users, Box } from "lucide-react";
 
 const ESTADOS_U = ["Activo", "Inactivo"];
@@ -63,6 +64,7 @@ export default function Usuarios({ showToast }) {
   const [editingId, setEditingId] = useState(null);
   const [form, setForm] = useState({ ...emptyForm });
   const [showDelete, setShowDelete] = useState(null);
+  const [saving, setSaving] = useState(false);
 
   const filtered = useMemo(
     () =>
@@ -116,7 +118,9 @@ export default function Usuarios({ showToast }) {
     setShowForm(true);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    setSaving(true);
+    await new Promise((r) => setTimeout(r, 400));
     if (editingId) {
       updateUsuario(editingId, form);
       showToast("Usuario actualizado.");
@@ -125,14 +129,16 @@ export default function Usuarios({ showToast }) {
       showToast("Usuario creado.");
     }
     setUsuarios(getUsuarios());
-    setShowForm(false);
+    setShowForm(false); setSaving(false);
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
+    setSaving(true);
+    await new Promise((r) => setTimeout(r, 300));
     deleteUsuario(showDelete.id);
     setUsuarios(getUsuarios());
     setShowDelete(null);
-    showToast("Usuario eliminado.", "danger");
+    showToast("Usuario eliminado.", "danger"); setSaving(false);
   };
 
   const clearFilters = () => {
@@ -297,11 +303,11 @@ export default function Usuarios({ showToast }) {
         size="lg"
         footer={
           <>
-            <button className="btn-ghost" onClick={() => setShowForm(false)}>
+            <button className="btn-ghost" onClick={() => setShowForm(false)} disabled={saving}>
               Cancelar
             </button>
-            <button className="btn-ctp" onClick={handleSave}>
-              {editingId ? "Actualizar" : "Crear usuario"}
+            <button className="btn-ctp" onClick={handleSave} disabled={saving}>
+              {saving ? <><ButtonSpinner size={16} /> Guardando...</> : (editingId ? "Actualizar" : "Crear usuario")}
             </button>
           </>
         }
@@ -567,6 +573,7 @@ export default function Usuarios({ showToast }) {
         show={!!showDelete}
         onClose={() => setShowDelete(null)}
         onConfirm={handleDelete}
+        saving={saving}
         message={`Eliminar usuario ${showDelete?.nombre} ${showDelete?.apellido}?`}
       />
     </div>

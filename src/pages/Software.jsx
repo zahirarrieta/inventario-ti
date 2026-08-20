@@ -4,6 +4,7 @@ import Modal from "../components/Modal";
 import PageHeader from "../components/PageHeader";
 import StatusBadge from "../components/StatusBadge";
 import EmptyState from "../components/EmptyState";
+import ButtonSpinner from "../components/ButtonSpinner";
 import ConfirmModal from "../components/ConfirmModal";
 import Pagination from "../components/Pagination";
 import FilterBar from "../components/FilterBar";
@@ -30,6 +31,7 @@ export default function Software({ showToast }) {
   const [editingId, setEditingId] = useState(null);
   const [form, setForm] = useState({ ...emptyForm });
   const [showDelete, setShowDelete] = useState(null);
+  const [saving, setSaving] = useState(false);
 
   const licencias = useMemo(() => getLicenciasResumen(), []);
 
@@ -47,7 +49,9 @@ export default function Software({ showToast }) {
   const openNew = () => { setForm({ ...emptyForm }); setEditingId(null); setShowForm(true); };
   const openEdit = (s) => { setForm({ ...s }); setEditingId(s.id); setShowForm(true); };
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    setSaving(true);
+    await new Promise((r) => setTimeout(r, 400));
     const data = {
       ...form,
       cantidadAdquirida: Number(form.cantidadAdquirida),
@@ -56,14 +60,16 @@ export default function Software({ showToast }) {
     if (editingId) { updateSoftware(editingId, data); showToast("Software actualizado correctamente."); }
     else { createSoftware(data); showToast("Software creado correctamente."); }
     setSoftware(getSoftware());
-    setShowForm(false);
+    setShowForm(false); setSaving(false);
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
+    setSaving(true);
+    await new Promise((r) => setTimeout(r, 300));
     deleteSoftware(showDelete.id);
     setSoftware(getSoftware());
     setShowDelete(null);
-    showToast("Software eliminado.", "danger");
+    showToast("Software eliminado.", "danger"); setSaving(false);
   };
 
   const clearFilters = () => { setSearch(""); setFEstado(""); setPage(1); };
@@ -79,10 +85,10 @@ export default function Software({ showToast }) {
       />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard icon={CheckCircle} value={licencias.disponibles} label="Disponibles" color="#10b981" delay={0} />
-        <StatCard icon={Key} value={licencias.utilizadas} label="Utilizadas" color="#023859" delay={0.1} />
-        <StatCard icon={AlertTriangle} value={licencias.porVencer} label="Por vencer" color="#f59e0b" delay={0.2} />
-        <StatCard icon={XCircle} value={licencias.vencidas} label="Vencidas" color="#ef4444" delay={0.3} />
+        <StatCard icon={CheckCircle} value={licencias.disponibles} label="Disponibles" color="#10b981" index={0} />
+        <StatCard icon={Key} value={licencias.utilizadas} label="Utilizadas" color="#023859" index={1} />
+        <StatCard icon={AlertTriangle} value={licencias.porVencer} label="Por vencer" color="#f59e0b" index={2} />
+        <StatCard icon={XCircle} value={licencias.vencidas} label="Vencidas" color="#ef4444" index={3} />
       </div>
 
       <div className="card-premium p-4 animate-fade-in-up">
@@ -200,8 +206,10 @@ export default function Software({ showToast }) {
         size="lg"
         footer={
           <>
-            <button className="btn-ghost" onClick={() => setShowForm(false)}>Cancelar</button>
-            <button className="btn-ctp" onClick={handleSave}>Guardar software</button>
+            <button className="btn-ghost" onClick={() => setShowForm(false)} disabled={saving}>Cancelar</button>
+            <button className="btn-ctp" onClick={handleSave} disabled={saving}>
+              {saving ? <><ButtonSpinner size={16} /> Guardando...</> : "Guardar software"}
+            </button>
           </>
         }
       >
@@ -332,6 +340,7 @@ export default function Software({ showToast }) {
         show={!!showDelete}
         onClose={() => setShowDelete(null)}
         onConfirm={handleDelete}
+        saving={saving}
         message={`No se puede deshacer la eliminación de ${showDelete?.nombre}.`}
       />
     </div>

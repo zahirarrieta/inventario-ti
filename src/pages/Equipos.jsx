@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { motion } from "framer-motion";
 import { getEquipos, createEquipo, updateEquipo, deleteEquipo, getUsuarios, getUsuarioNombre } from "../services/inventarioService";
 import Modal from "../components/Modal";
 import StatusBadge from "../components/StatusBadge";
@@ -7,7 +8,8 @@ import ConfirmModal from "../components/ConfirmModal";
 import Pagination from "../components/Pagination";
 import StatCard from "../components/StatCard";
 import FilterBar from "../components/FilterBar";
-import { Monitor, Eye, Pencil, Trash2, UserCheck, Info, Cpu, User, ShieldCheck, Plus } from "lucide-react";
+import ButtonSpinner from "../components/ButtonSpinner";
+import { Monitor, Eye, Pencil, Trash2, UserCheck, Info, Cpu, User, ShieldCheck, Plus, Search, Laptop } from "lucide-react";
 
 const ESTADOS = ["Activo", "Disponible", "En mantenimiento", "Dado de baja"];
 const TIPOS = ["Computador", "Portátil"];
@@ -36,6 +38,7 @@ export default function Equipos({ showToast }) {
   const [form, setForm] = useState({ ...emptyForm });
   const [showDelete, setShowDelete] = useState(null);
   const [assignForm, setAssignForm] = useState({ usuarioId: "", area: "", ubicacion: "", fechaAsignacion: "", observaciones: "" });
+  const [saving, setSaving] = useState(false);
 
   const usuarios = useMemo(() => getUsuarios(), []);
 
@@ -61,41 +64,57 @@ export default function Equipos({ showToast }) {
   const openNew = () => { setForm({ ...emptyForm }); setEditingId(null); setShowForm(true); };
   const openEdit = (eq) => { setForm({ ...eq, usuarioId: eq.usuarioId ? String(eq.usuarioId) : "" }); setEditingId(eq.id); setShowForm(true); };
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    setSaving(true);
+    await new Promise((r) => setTimeout(r, 400));
     const data = { ...form, usuarioId: form.usuarioId ? Number(form.usuarioId) : null, costo: form.costo ? Number(form.costo) : 0 };
     if (editingId) { updateEquipo(editingId, data); showToast("Equipo actualizado correctamente."); }
     else { createEquipo(data); showToast("Equipo creado correctamente."); }
-    setEquipos(getEquipos()); setShowForm(false);
+    setEquipos(getEquipos()); setShowForm(false); setSaving(false);
   };
 
-  const handleDelete = () => { deleteEquipo(showDelete.id); setEquipos(getEquipos()); setShowDelete(null); showToast("Equipo eliminado.", "danger"); };
+  const handleDelete = async () => {
+    setSaving(true);
+    await new Promise((r) => setTimeout(r, 300));
+    deleteEquipo(showDelete.id); setEquipos(getEquipos()); setShowDelete(null); showToast("Equipo eliminado.", "danger"); setSaving(false);
+  };
 
-  const handleAssign = () => {
+  const handleAssign = async () => {
+    setSaving(true);
+    await new Promise((r) => setTimeout(r, 400));
     updateEquipo(showAssign.id, { usuarioId: assignForm.usuarioId ? Number(assignForm.usuarioId) : null, area: assignForm.area, ubicacion: assignForm.ubicacion, estado: assignForm.usuarioId ? "Activo" : showAssign.estado });
-    setEquipos(getEquipos()); setShowAssign(null); showToast("Activo asignado correctamente.");
+    setEquipos(getEquipos()); setShowAssign(null); showToast("Activo asignado correctamente."); setSaving(false);
   };
 
   const clearFilters = () => { setSearch(""); setFTipo(""); setFMarca(""); setFEstado(""); setFUbicacion(""); setFUsuario(""); setPage(1); };
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35 }}
+        className="flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+      >
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Equipos</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-text-primary tracking-tight flex items-center gap-2">
+            <Laptop size={24} className="text-ctp-cyan shrink-0" />
+            Equipos
+          </h1>
           <p className="text-sm text-text-muted mt-1">Administración de equipos tecnológicos</p>
         </div>
-        <button onClick={openNew} className="btn-ctp shrink-0">
+        <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={openNew} className="btn-ctp shrink-0">
           <Plus size={16} /> Nuevo equipo
-        </button>
-      </div>
+        </motion.button>
+      </motion.div>
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard icon={Monitor} value={kpis.total} label="Total" description="Equipos registrados" color="#0FDBF2" delay={0} />
-        <StatCard icon={UserCheck} value={kpis.asignados} label="Asignados" description="Con usuario asignado" color="#10b981" delay={0.05} />
-        <StatCard icon={Info} value={kpis.disponibles} label="Disponibles" description="Sin asignar" color="#34d399" delay={0.10} />
-        <StatCard icon={Cpu} value={kpis.mantenimiento} label="Mantenimiento" description="En reparación" color="#f59e0b" delay={0.15} />
+        <StatCard icon={Monitor} value={kpis.total} label="Total" description="Equipos registrados" color="#0FDBF2" index={0} />
+        <StatCard icon={UserCheck} value={kpis.asignados} label="Asignados" description="Con usuario asignado" color="#10b981" index={1} />
+        <StatCard icon={Info} value={kpis.disponibles} label="Disponibles" description="Sin asignar" color="#34d399" index={2} />
+        <StatCard icon={Cpu} value={kpis.mantenimiento} label="Mantenimiento" description="En reparación" color="#f59e0b" index={3} />
       </div>
 
       <div className="card-premium p-4 animate-fade-in-up">
@@ -206,9 +225,9 @@ export default function Equipos({ showToast }) {
         size="xl"
         footer={
           <>
-            <button className="btn-ghost" onClick={() => setShowForm(false)}>Cancelar</button>
-            <button className="btn-ctp" onClick={handleSave}>
-              <Monitor size={16} /> Guardar equipo
+            <button className="btn-ghost" onClick={() => setShowForm(false)} disabled={saving}>Cancelar</button>
+            <button className="btn-ctp" onClick={handleSave} disabled={saving}>
+              {saving ? <><ButtonSpinner size={16} /> Guardando...</> : "Guardar equipo"}
             </button>
           </>
         }
@@ -419,9 +438,9 @@ export default function Equipos({ showToast }) {
         size="md"
         footer={
           <>
-            <button className="btn-ghost" onClick={() => setShowAssign(null)}>Cancelar</button>
-            <button className="btn-ctp" onClick={handleAssign}>
-              <UserCheck size={16} /> Asignar
+            <button className="btn-ghost" onClick={() => setShowAssign(null)} disabled={saving}>Cancelar</button>
+            <button className="btn-ctp" onClick={handleAssign} disabled={saving}>
+              {saving ? <><ButtonSpinner size={16} /> Asignando...</> : <><UserCheck size={16} /> Asignar</>}
             </button>
           </>
         }
@@ -467,7 +486,7 @@ export default function Equipos({ showToast }) {
         )}
       </Modal>
 
-      <ConfirmModal show={!!showDelete} onClose={() => setShowDelete(null)} onConfirm={handleDelete} message={`No se puede deshacer la eliminación de ${showDelete?.codigo} — ${showDelete?.marca} ${showDelete?.modelo}.`} />
+      <ConfirmModal show={!!showDelete} onClose={() => setShowDelete(null)} onConfirm={handleDelete} saving={saving} message={`No se puede deshacer la eliminación de ${showDelete?.codigo} — ${showDelete?.marca} ${showDelete?.modelo}.`} />
     </div>
   );
 }

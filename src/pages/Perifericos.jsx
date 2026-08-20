@@ -4,6 +4,7 @@ import Modal from "../components/Modal";
 import PageHeader from "../components/PageHeader";
 import StatusBadge from "../components/StatusBadge";
 import EmptyState from "../components/EmptyState";
+import ButtonSpinner from "../components/ButtonSpinner";
 import ConfirmModal from "../components/ConfirmModal";
 import Pagination from "../components/Pagination";
 import FilterBar from "../components/FilterBar";
@@ -28,6 +29,7 @@ export default function Perifericos({ showToast }) {
   const [editingId, setEditingId] = useState(null);
   const [form, setForm] = useState({ ...emptyForm });
   const [showDelete, setShowDelete] = useState(null);
+  const [saving, setSaving] = useState(false);
   const usuarios = useMemo(() => getUsuarios(), []);
 
   const filtered = useMemo(() => perifericos.filter((p) => {
@@ -56,14 +58,20 @@ export default function Perifericos({ showToast }) {
   const openNew = () => { setForm({ ...emptyForm }); setEditingId(null); setShowForm(true); };
   const openEdit = (p) => { setForm({ ...p, usuarioId: p.usuarioId ? String(p.usuarioId) : "" }); setEditingId(p.id); setShowForm(true); };
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    setSaving(true);
+    await new Promise((r) => setTimeout(r, 400));
     const data = { ...form, usuarioId: form.usuarioId ? Number(form.usuarioId) : null };
     if (editingId) { updatePeriferico(editingId, data); showToast("Periférico actualizado."); }
     else { createPeriferico(data); showToast("Periférico creado."); }
-    setPerifericos(getPerifericos()); setShowForm(false);
+    setPerifericos(getPerifericos()); setShowForm(false); setSaving(false);
   };
 
-  const handleDelete = () => { deletePeriferico(showDelete.id); setPerifericos(getPerifericos()); setShowDelete(null); showToast("Periférico eliminado.", "danger"); };
+  const handleDelete = async () => {
+    setSaving(true);
+    await new Promise((r) => setTimeout(r, 300));
+    deletePeriferico(showDelete.id); setPerifericos(getPerifericos()); setShowDelete(null); showToast("Periférico eliminado.", "danger"); setSaving(false);
+  };
 
   const clearFilters = () => { setSearch(""); setFTipo(""); setFMarca(""); setFEstado(""); setPage(1); };
 
@@ -93,7 +101,7 @@ export default function Perifericos({ showToast }) {
             label={s.label}
             description={s.description}
             color={s.color}
-            delay={i * 0.05}
+            index={i}
           />
         ))}
       </div>
@@ -177,8 +185,10 @@ export default function Perifericos({ showToast }) {
         size="lg"
         footer={
           <>
-            <button className="btn-ghost" onClick={() => setShowForm(false)}>Cancelar</button>
-            <button className="btn-ctp" onClick={handleSave}>Guardar</button>
+            <button className="btn-ghost" onClick={() => setShowForm(false)} disabled={saving}>Cancelar</button>
+            <button className="btn-ctp" onClick={handleSave} disabled={saving}>
+              {saving ? <><ButtonSpinner size={16} /> Guardando...</> : "Guardar"}
+            </button>
           </>
         }
       >
@@ -313,6 +323,7 @@ export default function Perifericos({ showToast }) {
         show={!!showDelete}
         onClose={() => setShowDelete(null)}
         onConfirm={handleDelete}
+        saving={saving}
         message={`¿Eliminar periférico ${showDelete?.codigo}? Esta acción no se puede deshacer.`}
       />
     </div>

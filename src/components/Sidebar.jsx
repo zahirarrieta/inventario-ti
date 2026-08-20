@@ -1,6 +1,6 @@
 import { NavLink, useLocation } from "react-router-dom";
 import {
-  LayoutDashboard, Monitor, Printer, Keyboard, Box, Users, Wrench,
+  LayoutDashboard, Laptop, Monitor, Printer, Keyboard, Box, Users, Wrench,
   Settings, LogOut, ChevronLeft, ChevronRight, Activity
 } from "lucide-react";
 
@@ -14,7 +14,7 @@ const sections = [
   {
     title: "Inventario",
     items: [
-      { path: "/equipos", icon: Monitor, label: "Equipos" },
+      { path: "/equipos", icon: Laptop, label: "Equipos" },
       { path: "/monitores", icon: Monitor, label: "Monitores" },
       { path: "/impresoras", icon: Printer, label: "Impresoras" },
       { path: "/perifericos", icon: Keyboard, label: "Periféricos" },

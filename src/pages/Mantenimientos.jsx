@@ -4,6 +4,7 @@ import Modal from "../components/Modal";
 import PageHeader from "../components/PageHeader";
 import StatusBadge from "../components/StatusBadge";
 import EmptyState from "../components/EmptyState";
+import ButtonSpinner from "../components/ButtonSpinner";
 import ConfirmModal from "../components/ConfirmModal";
 import Pagination from "../components/Pagination";
 import FilterBar from "../components/FilterBar";
@@ -26,6 +27,7 @@ export default function Mantenimientos({ showToast }) {
   const [editingId, setEditingId] = useState(null);
   const [form, setForm] = useState({ ...emptyForm });
   const [showDelete, setShowDelete] = useState(null);
+  const [saving, setSaving] = useState(false);
   const equipos = useMemo(() => getEquipos(), []);
 
   const filtered = useMemo(() => mantenimientos.filter((m) => {
@@ -45,14 +47,20 @@ export default function Mantenimientos({ showToast }) {
 
   const openNew = () => { setForm({ ...emptyForm }); setEditingId(null); setShowForm(true); };
   const openEdit = (m) => { setForm({ ...m, costo: String(m.costo || ""), activoId: String(m.activoId || "") }); setEditingId(m.id); setShowForm(true); };
-  const handleSave = () => {
+  const handleSave = async () => {
+    setSaving(true);
+    await new Promise((r) => setTimeout(r, 400));
     const eq = equipos.find((e) => e.id === Number(form.activoId));
     const data = { ...form, activoId: form.activoId ? Number(form.activoId) : null, activoCodigo: eq ? eq.codigo : form.activoCodigo, costo: form.costo ? Number(form.costo) : 0 };
     if (editingId) { updateMantenimiento(editingId, data); showToast("Mantenimiento actualizado."); }
     else { createMantenimiento(data); showToast("Mantenimiento creado."); }
-    setMantenimientos(getMantenimientos()); setShowForm(false);
+    setMantenimientos(getMantenimientos()); setShowForm(false); setSaving(false);
   };
-  const handleDelete = () => { deleteMantenimiento(showDelete.id); setMantenimientos(getMantenimientos()); setShowDelete(null); showToast("Mantenimiento eliminado.", "danger"); };
+  const handleDelete = async () => {
+    setSaving(true);
+    await new Promise((r) => setTimeout(r, 300));
+    deleteMantenimiento(showDelete.id); setMantenimientos(getMantenimientos()); setShowDelete(null); showToast("Mantenimiento eliminado.", "danger"); setSaving(false);
+  };
   const clearFilters = () => { setSearch(""); setFTipo(""); setFEstado(""); setPage(1); };
 
   const getTipoBadge = (tipo) => tipo === "Preventivo"
@@ -64,10 +72,10 @@ export default function Mantenimientos({ showToast }) {
       <PageHeader title="Mantenimientos" subtitle="Gestión de mantenimientos preventivos y correctivos" actionLabel="Nuevo mantenimiento" onAction={openNew} actionIcon={Wrench} />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard icon={CalendarCheck} value={statsMtto.programados} label="Programados" color="#3b82f6" delay={0} />
-        <StatCard icon={Clock} value={statsMtto.enProceso} label="En proceso" color="#f59e0b" delay={0.05} />
-        <StatCard icon={CheckCircle} value={statsMtto.finalizados} label="Finalizados" color="#10b981" delay={0.1} />
-        <StatCard icon={ArrowRightCircle} value={statsMtto.total} label="Total registros" color="#023859" delay={0.15} />
+        <StatCard icon={CalendarCheck} value={statsMtto.programados} label="Programados" color="#3b82f6" index={0} />
+        <StatCard icon={Clock} value={statsMtto.enProceso} label="En proceso" color="#f59e0b" index={1} />
+        <StatCard icon={CheckCircle} value={statsMtto.finalizados} label="Finalizados" color="#10b981" index={2} />
+        <StatCard icon={ArrowRightCircle} value={statsMtto.total} label="Total registros" color="#023859" index={3} />
       </div>
 
       <div className="card-premium p-4 animate-fade-in-up">
@@ -160,8 +168,10 @@ export default function Mantenimientos({ showToast }) {
         size="lg"
         footer={
           <>
-            <button className="btn-ghost" onClick={() => setShowForm(false)}>Cancelar</button>
-            <button className="btn-ctp" onClick={handleSave}>{editingId ? "Actualizar" : "Crear"} mantenimiento</button>
+            <button className="btn-ghost" onClick={() => setShowForm(false)} disabled={saving}>Cancelar</button>
+            <button className="btn-ctp" onClick={handleSave} disabled={saving}>
+              {saving ? <><ButtonSpinner size={16} /> Guardando...</> : `${editingId ? "Actualizar" : "Crear"} mantenimiento`}
+            </button>
           </>
         }
       >
@@ -252,7 +262,7 @@ export default function Mantenimientos({ showToast }) {
         )}
       </Modal>
 
-      <ConfirmModal show={!!showDelete} onClose={() => setShowDelete(null)} onConfirm={handleDelete} message={`No se puede deshacer la eliminación de ${showDelete?.codigo}.`} />
+      <ConfirmModal show={!!showDelete} onClose={() => setShowDelete(null)} onConfirm={handleDelete} saving={saving} message={`No se puede deshacer la eliminación de ${showDelete?.codigo}.`} />
     </div>
   );
 }
