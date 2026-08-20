@@ -1,5 +1,6 @@
 import { CheckCircle, AlertTriangle, XCircle, Info, X } from "lucide-react";
 import { useEffect } from "react";
+import { useTheme } from "../context/ThemeContext";
 
 const iconMap = {
   success: CheckCircle,
@@ -18,6 +19,8 @@ const colorMap = {
 export default function Toast({ message, type = "success", onClose }) {
   const Icon = iconMap[type] || iconMap.info;
   const colors = colorMap[type] || colorMap.info;
+  const { theme } = useTheme();
+  const isLight = theme === "light";
 
   useEffect(() => {
     const timer = setTimeout(onClose, 3500);
@@ -26,12 +29,12 @@ export default function Toast({ message, type = "success", onClose }) {
 
   return (
     <div
-      className="flex items-center gap-3 px-4 py-3 rounded-xl shadow-2xl animate-slide-in-right"
+      className="flex items-center gap-3 px-4 py-3 rounded-xl shadow-2xl animate-slide-in-right relative"
       style={{
-        background: "rgba(9,1,38,0.92)",
+        background: isLight ? "rgba(255, 255, 255, 0.95)" : "rgba(9,1,38,0.92)",
         backdropFilter: "blur(20px)",
         border: `1px solid ${colors.border}`,
-        boxShadow: `0 10px 40px rgba(0,0,0,0.4), 0 0 20px ${colors.border}`,
+        boxShadow: `0 10px 40px ${isLight ? "rgba(0,0,0,0.10)" : "rgba(0,0,0,0.4)"}, 0 0 20px ${colors.border}`,
         minWidth: 300,
         maxWidth: 420,
       }}
@@ -39,7 +42,7 @@ export default function Toast({ message, type = "success", onClose }) {
       <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ background: colors.bg }}>
         <Icon size={18} style={{ color: colors.icon }} />
       </div>
-      <span className="text-sm font-medium text-text-primary flex-1">{message}</span>
+      <span className={`text-sm font-medium flex-1 ${isLight ? "text-text-primary" : "text-text-primary"}`}>{message}</span>
       <button
         onClick={onClose}
         className="p-1 rounded-lg hover:bg-white/5 text-text-muted hover:text-text-primary transition-all shrink-0"

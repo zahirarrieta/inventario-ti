@@ -5,7 +5,7 @@ import {
   getEstadisticas, getEquipos, getMonitores, getImpresoras,
   getSoftware, getActividad, getUsuarioNombre,
 } from "../services/inventarioService";
-import { Monitor, Printer, Keyboard, Box, Wrench, Users, Plus, ArrowRight, CheckCircle, ArrowRightCircle, XCircle, Pencil } from "lucide-react";
+import { Monitor, Printer, Keyboard, Box, Wrench, Users, Plus, ArrowRight, CheckCircle, ArrowRightCircle, XCircle, Pencil, Sparkles } from "lucide-react";
 import StatCard from "../components/StatCard";
 import StatusBadge from "../components/StatusBadge";
 
@@ -30,7 +30,7 @@ const COLORS = ["#0FDBF2", "#023859", "#a855f7", "#10b981", "#f59e0b", "#ef4444"
 const CustomTooltip = ({ active, payload }) => {
   if (!active || !payload?.length) return null;
   return (
-    <div className="px-3 py-2 rounded-xl text-xs font-medium" style={{ background: "#1a1238", border: "1px solid rgba(15,219,242,0.22)" }}>
+    <div className="px-3 py-2 rounded-xl text-xs font-medium dropdown-panel">
       <span className="text-text-primary">{payload[0].name}: </span>
       <span className="text-ctp-cyan font-bold">{payload[0].value}</span>
     </div>
@@ -70,7 +70,7 @@ export default function Dashboard() {
     <div className="space-y-6 animate-fade-in">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-text-primary tracking-tight">¡Bienvenido, Administrador! 👋</h1>
+          <h1 className="text-2xl font-bold text-text-primary tracking-tight flex items-center gap-2">¡Bienvenido, Administrador! <Sparkles size={22} className="text-ctp-cyan" /></h1>
           <p className="text-sm text-text-muted mt-1">Resumen general del inventario tecnológico</p>
         </div>
         <Link to="/equipos" className="btn-ctp shrink-0">

@@ -308,7 +308,7 @@ export default function Usuarios({ showToast }) {
       >
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
-            <label className="block text-xs font-medium text-text-muted mb-1.5">
+            <label className="form-label">
               Nombre *
             </label>
             <input
@@ -319,7 +319,7 @@ export default function Usuarios({ showToast }) {
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-text-muted mb-1.5">
+            <label className="form-label">
               Apellido *
             </label>
             <input
@@ -330,7 +330,7 @@ export default function Usuarios({ showToast }) {
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-text-muted mb-1.5">
+            <label className="form-label">
               Documento *
             </label>
             <input
@@ -341,7 +341,7 @@ export default function Usuarios({ showToast }) {
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-text-muted mb-1.5">
+            <label className="form-label">
               Correo *
             </label>
             <input
@@ -352,7 +352,7 @@ export default function Usuarios({ showToast }) {
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-text-muted mb-1.5">
+            <label className="form-label">
               Teléfono
             </label>
             <input
@@ -363,7 +363,7 @@ export default function Usuarios({ showToast }) {
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-text-muted mb-1.5">
+            <label className="form-label">
               Área *
             </label>
             <select
@@ -380,7 +380,7 @@ export default function Usuarios({ showToast }) {
             </select>
           </div>
           <div>
-            <label className="block text-xs font-medium text-text-muted mb-1.5">
+            <label className="form-label">
               Cargo *
             </label>
             <input
@@ -391,7 +391,7 @@ export default function Usuarios({ showToast }) {
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-text-muted mb-1.5">
+            <label className="form-label">
               Estado
             </label>
             <select
@@ -407,7 +407,7 @@ export default function Usuarios({ showToast }) {
             </select>
           </div>
           <div>
-            <label className="block text-xs font-medium text-text-muted mb-1.5">
+            <label className="form-label">
               Ubicación
             </label>
             <select

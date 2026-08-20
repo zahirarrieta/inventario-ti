@@ -8,7 +8,7 @@ import ConfirmModal from "../components/ConfirmModal";
 import Pagination from "../components/Pagination";
 import FilterBar from "../components/FilterBar";
 import StatCard from "../components/StatCard";
-import { Eye, Pencil, Trash2, Box, Key, AlertTriangle, CheckCircle } from "lucide-react";
+import { Eye, Pencil, Trash2, Box, Key, AlertTriangle, CheckCircle, XCircle } from "lucide-react";
 
 const TIPOS_LICENCIA = ["Suscripción", "OEM", "Gratuita", "Incluido", "Perpetua"];
 const ESTADOS = ["Activo", "Por vencer", "Vencido", "Suspendido"];
@@ -82,7 +82,7 @@ export default function Software({ showToast }) {
         <StatCard icon={CheckCircle} value={licencias.disponibles} label="Disponibles" color="#10b981" delay={0} />
         <StatCard icon={Key} value={licencias.utilizadas} label="Utilizadas" color="#023859" delay={0.1} />
         <StatCard icon={AlertTriangle} value={licencias.porVencer} label="Por vencer" color="#f59e0b" delay={0.2} />
-        <StatCard icon={Trash2} value={licencias.vencidas} label="Vencidas" color="#ef4444" delay={0.3} />
+        <StatCard icon={XCircle} value={licencias.vencidas} label="Vencidas" color="#ef4444" delay={0.3} />
       </div>
 
       <div className="card-premium p-4 animate-fade-in-up">
@@ -207,51 +207,51 @@ export default function Software({ showToast }) {
       >
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div className="md:col-span-2 lg:col-span-3">
-            <label className="block text-xs font-medium text-text-muted mb-1.5">Nombre *</label>
+            <label className="form-label">Nombre *</label>
             <input type="text" className="input-dark w-full" value={form.nombre} onChange={(e) => setForm({ ...form, nombre: e.target.value })} placeholder="Ej: Microsoft Office 365" />
           </div>
           <div>
-            <label className="block text-xs font-medium text-text-muted mb-1.5">Fabricante *</label>
+            <label className="form-label">Fabricante *</label>
             <input type="text" className="input-dark w-full" value={form.fabricante} onChange={(e) => setForm({ ...form, fabricante: e.target.value })} />
           </div>
           <div>
-            <label className="block text-xs font-medium text-text-muted mb-1.5">Versión</label>
+            <label className="form-label">Versión</label>
             <input type="text" className="input-dark w-full" value={form.version} onChange={(e) => setForm({ ...form, version: e.target.value })} />
           </div>
           <div>
-            <label className="block text-xs font-medium text-text-muted mb-1.5">Tipo de licencia</label>
+            <label className="form-label">Tipo de licencia</label>
             <select className="select-dark w-full" value={form.tipoLicencia} onChange={(e) => setForm({ ...form, tipoLicencia: e.target.value })}>
               {TIPOS_LICENCIA.map((t) => <option key={t} value={t}>{t}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-xs font-medium text-text-muted mb-1.5">Clave</label>
+            <label className="form-label">Clave</label>
             <input type="text" className="input-dark w-full" value={form.clave} onChange={(e) => setForm({ ...form, clave: e.target.value })} placeholder="XXXXX-XXXXX-XXXXX" />
           </div>
           <div>
-            <label className="block text-xs font-medium text-text-muted mb-1.5">Estado</label>
+            <label className="form-label">Estado</label>
             <select className="select-dark w-full" value={form.estado} onChange={(e) => setForm({ ...form, estado: e.target.value })}>
               {ESTADOS.map((es) => <option key={es} value={es}>{es}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-xs font-medium text-text-muted mb-1.5">Adquiridas</label>
+            <label className="form-label">Adquiridas</label>
             <input type="number" className="input-dark w-full" value={form.cantidadAdquirida} onChange={(e) => setForm({ ...form, cantidadAdquirida: e.target.value })} />
           </div>
           <div>
-            <label className="block text-xs font-medium text-text-muted mb-1.5">Utilizadas</label>
+            <label className="form-label">Utilizadas</label>
             <input type="number" className="input-dark w-full" value={form.cantidadUtilizada} onChange={(e) => setForm({ ...form, cantidadUtilizada: e.target.value })} />
           </div>
           <div>
-            <label className="block text-xs font-medium text-text-muted mb-1.5">Fecha compra</label>
+            <label className="form-label">Fecha compra</label>
             <input type="date" className="input-dark w-full" value={form.fechaCompra} onChange={(e) => setForm({ ...form, fechaCompra: e.target.value })} />
           </div>
           <div>
-            <label className="block text-xs font-medium text-text-muted mb-1.5">Vencimiento</label>
+            <label className="form-label">Vencimiento</label>
             <input type="date" className="input-dark w-full" value={form.fechaVencimiento} onChange={(e) => setForm({ ...form, fechaVencimiento: e.target.value })} />
           </div>
           <div>
-            <label className="block text-xs font-medium text-text-muted mb-1.5">Proveedor</label>
+            <label className="form-label">Proveedor</label>
             <input type="text" className="input-dark w-full" value={form.proveedor} onChange={(e) => setForm({ ...form, proveedor: e.target.value })} />
           </div>
         </div>

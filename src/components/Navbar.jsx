@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, Search, Bell, ChevronDown, User, Settings, LogOut, PanelLeftOpen, PanelLeftClose } from "lucide-react";
+import { Menu, Search, Bell, ChevronDown, User, Settings, LogOut, PanelLeftOpen, PanelLeftClose, Monitor, Wrench, AlertTriangle } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 
 const routeConfig = {
@@ -33,9 +33,9 @@ export default function Navbar({ onToggleSidebar, sidebarOpen }) {
   }, []);
 
   const notifications = [
-    { id: 1, text: "Nuevo equipo registrado", time: "Hace 5 min", icon: "🖥️" },
-    { id: 2, text: "Mantenimiento programado", time: "Hace 1 hora", icon: "🔧" },
-    { id: 3, text: "Licencia próxima a vencer", time: "Hace 2 horas", icon: "⚠️" },
+    { id: 1, text: "Nuevo equipo registrado", time: "Hace 5 min", icon: Monitor, color: "#10b981" },
+    { id: 2, text: "Mantenimiento programado", time: "Hace 1 hora", icon: Wrench, color: "#f59e0b" },
+    { id: 3, text: "Licencia próxima a vencer", time: "Hace 2 horas", icon: AlertTriangle, color: "#ef4444" },
   ];
 
   return (
@@ -98,17 +98,22 @@ export default function Navbar({ onToggleSidebar, sidebarOpen }) {
               <span className="text-[10px] font-bold text-ctp-cyan bg-ctp-cyan/10 rounded-full px-2 py-0.5">{notifications.length}</span>
             </div>
             <div className="max-h-72 overflow-y-auto">
-              {notifications.map((n) => (
-                <div key={n.id} className="px-4 py-3 hover:bg-white/[0.03] transition-colors border-b border-white/[0.03] cursor-pointer">
-                  <div className="flex items-start gap-3">
-                    <span className="text-lg mt-0.5">{n.icon}</span>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm text-text-primary font-medium leading-tight">{n.text}</p>
-                      <p className="text-[11px] text-text-muted mt-1">{n.time}</p>
+              {notifications.map((n) => {
+                  const NotifIcon = n.icon;
+                  return (
+                    <div key={n.id} className="px-4 py-3 hover:bg-white/[0.03] transition-colors border-b border-white/[0.03] cursor-pointer">
+                      <div className="flex items-start gap-3">
+                        <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5" style={{ background: `${n.color}18` }}>
+                          <NotifIcon size={16} style={{ color: n.color }} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm text-text-primary font-medium leading-tight">{n.text}</p>
+                          <p className="text-[11px] text-text-muted mt-1">{n.time}</p>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              ))}
+                  );
+                })}
             </div>
             <div className="px-4 py-2.5 border-t border-white/5 text-center">
               <button className="text-xs font-medium text-ctp-cyan hover:text-ctp-cyan-light transition-colors">Ver todas</button>

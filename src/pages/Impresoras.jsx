@@ -58,7 +58,7 @@ export default function Impresoras({ showToast }) {
   const clearFilters = () => { setSearch(""); setFMarca(""); setFTipo(""); setFEstado(""); setPage(1); };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <PageHeader title="Impresoras" subtitle="Gestión de dispositivos de impresión" actionLabel="Nueva impresora" actionIcon={Printer} onAction={openNew} />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -68,7 +68,7 @@ export default function Impresoras({ showToast }) {
         <StatCard icon={Printer} value={totalMantenimiento} label="Mantenimiento" description="En reparación" color="#f59e0b" delay={0.15} />
       </div>
 
-      <div className="card-premium p-5">
+      <div className="card-premium p-4 animate-fade-in-up">
         <FilterBar
           search={search}
           onSearchChange={(v) => { setSearch(v); setPage(1); }}
@@ -132,47 +132,47 @@ export default function Impresoras({ showToast }) {
         footer={<><button className="btn-ghost" onClick={() => setShowForm(false)}>Cancelar</button><button className="btn-ctp" onClick={handleSave}>Guardar</button></>}>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label className="block text-xs font-semibold text-text-muted mb-1.5">Código *</label>
+            <label className="form-label">Código *</label>
             <input type="text" className="input-dark w-full" value={form.codigo} onChange={(e) => setForm({ ...form, codigo: e.target.value })} placeholder="TI-PR-XXXXX" />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-text-muted mb-1.5">Marca *</label>
+            <label className="form-label">Marca *</label>
             <select className="select-dark w-full" value={form.marca} onChange={(e) => setForm({ ...form, marca: e.target.value })}>{MARCAS_IMP.map((m) => <option key={m} value={m}>{m}</option>)}</select>
           </div>
           <div>
-            <label className="block text-xs font-semibold text-text-muted mb-1.5">Modelo *</label>
+            <label className="form-label">Modelo *</label>
             <input type="text" className="input-dark w-full" value={form.modelo} onChange={(e) => setForm({ ...form, modelo: e.target.value })} />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-text-muted mb-1.5">Serial *</label>
+            <label className="form-label">Serial *</label>
             <input type="text" className="input-dark w-full" value={form.serial} onChange={(e) => setForm({ ...form, serial: e.target.value })} />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-text-muted mb-1.5">Tipo *</label>
+            <label className="form-label">Tipo *</label>
             <select className="select-dark w-full" value={form.tipo} onChange={(e) => setForm({ ...form, tipo: e.target.value })}>{TIPOS_IMP.map((t) => <option key={t} value={t}>{t}</option>)}</select>
           </div>
           <div>
-            <label className="block text-xs font-semibold text-text-muted mb-1.5">IP</label>
+            <label className="form-label">IP</label>
             <input type="text" className="input-dark w-full" value={form.ip} onChange={(e) => setForm({ ...form, ip: e.target.value })} placeholder="192.168.1.xxx" />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-text-muted mb-1.5">Área</label>
+            <label className="form-label">Área</label>
             <input type="text" className="input-dark w-full" value={form.area} onChange={(e) => setForm({ ...form, area: e.target.value })} />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-text-muted mb-1.5">Ubicación</label>
+            <label className="form-label">Ubicación</label>
             <input type="text" className="input-dark w-full" value={form.ubicacion} onChange={(e) => setForm({ ...form, ubicacion: e.target.value })} />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-text-muted mb-1.5">Estado</label>
+            <label className="form-label">Estado</label>
             <select className="select-dark w-full" value={form.estado} onChange={(e) => setForm({ ...form, estado: e.target.value })}>{ESTADOS.map((e) => <option key={e} value={e}>{e}</option>)}</select>
           </div>
           <div>
-            <label className="block text-xs font-semibold text-text-muted mb-1.5">Contador (páginas)</label>
+            <label className="form-label">Contador (páginas)</label>
             <input type="number" className="input-dark w-full" value={form.contador} onChange={(e) => setForm({ ...form, contador: e.target.value })} />
           </div>
           <div className="md:col-span-2">
-            <label className="block text-xs font-semibold text-text-muted mb-1.5">Responsable</label>
+            <label className="form-label">Responsable</label>
             <select className="select-dark w-full" value={form.usuarioResponsableId} onChange={(e) => setForm({ ...form, usuarioResponsableId: e.target.value })}>
               <option value="">Sin asignar</option>
               {usuarios.map((u) => <option key={u.id} value={u.id}>{u.nombre} {u.apellido}</option>)}

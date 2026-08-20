@@ -28,11 +28,15 @@ export default function Modal({ show, onClose, title, children, footer, size = "
       className="modal-ctp-overlay animate-fade-in"
       onClick={(e) => { if (e.target === overlayRef.current) onClose(); }}
     >
-      <div className={`${sizeClass} modal-ctp animate-scale-in`}>
+      <div className={`${sizeClass} w-full modal-ctp animate-scale-in`}>
         <div className="modal-ctp-header">
           <h3 className="modal-ctp-title">{title}</h3>
-          <button onClick={onClose} className="p-2 rounded-xl modal-ctp-close transition-all" aria-label="Cerrar">
-            <X size={18} />
+          <button
+            onClick={onClose}
+            className="modal-ctp-close w-8 h-8 rounded-lg flex items-center justify-center transition-all"
+            aria-label="Cerrar"
+          >
+            <X size={16} />
           </button>
         </div>
 

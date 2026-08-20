@@ -71,7 +71,7 @@ export default function Monitores({ showToast }) {
         <StatCard icon={Wrench} value={stats.mantenimiento} label="Mantenimiento" description="En reparación" color="#f59e0b" delay={0.15} />
       </div>
 
-      <div className="card-premium p-5 animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
+      <div className="card-premium p-4 animate-fade-in-up">
         <FilterBar
           search={search}
           onSearchChange={(v) => { setSearch(v); setPage(1); }}
@@ -84,7 +84,7 @@ export default function Monitores({ showToast }) {
         />
       </div>
 
-      <div className="card-premium overflow-hidden animate-fade-in-up" style={{ animationDelay: "0.25s" }}>
+      <div className="card-premium overflow-hidden animate-fade-in-up stagger-2">
         <div className="overflow-x-auto">
           <table className="table-dark-ctp">
             <thead>
@@ -142,64 +142,64 @@ export default function Monitores({ showToast }) {
       >
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label className="block text-xs font-semibold text-text-muted mb-1.5">Código *</label>
+            <label className="form-label">Código *</label>
             <input type="text" className="input-dark" value={form.codigo} onChange={(e) => setForm({ ...form, codigo: e.target.value })} placeholder="TI-MN-XXXXX" />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-text-muted mb-1.5">Marca *</label>
+            <label className="form-label">Marca *</label>
             <select className="select-dark" value={form.marca} onChange={(e) => setForm({ ...form, marca: e.target.value })}>
               {MARCAS.map((m) => <option key={m} value={m}>{m}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-xs font-semibold text-text-muted mb-1.5">Modelo *</label>
+            <label className="form-label">Modelo *</label>
             <input type="text" className="input-dark" value={form.modelo} onChange={(e) => setForm({ ...form, modelo: e.target.value })} />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-text-muted mb-1.5">Serial *</label>
+            <label className="form-label">Serial *</label>
             <input type="text" className="input-dark" value={form.serial} onChange={(e) => setForm({ ...form, serial: e.target.value })} />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-text-muted mb-1.5">Tamaño</label>
+            <label className="form-label">Tamaño</label>
             <select className="select-dark" value={form.tamano} onChange={(e) => setForm({ ...form, tamano: e.target.value })}>
               {['22"', '24"', '27"', '32"'].map((t) => <option key={t} value={t}>{t}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-xs font-semibold text-text-muted mb-1.5">Resolución</label>
+            <label className="form-label">Resolución</label>
             <select className="select-dark" value={form.resolucion} onChange={(e) => setForm({ ...form, resolucion: e.target.value })}>
               {["1920x1080", "2560x1440", "3840x2160"].map((r) => <option key={r} value={r}>{r}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-xs font-semibold text-text-muted mb-1.5">Tipo de panel</label>
+            <label className="form-label">Tipo de panel</label>
             <select className="select-dark" value={form.tipoPanel} onChange={(e) => setForm({ ...form, tipoPanel: e.target.value })}>
               {["IPS", "VA", "TN", "OLED"].map((p) => <option key={p} value={p}>{p}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-xs font-semibold text-text-muted mb-1.5">Fecha de compra</label>
+            <label className="form-label">Fecha de compra</label>
             <input type="date" className="input-dark" value={form.fechaCompra} onChange={(e) => setForm({ ...form, fechaCompra: e.target.value })} />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-text-muted mb-1.5">Estado</label>
+            <label className="form-label">Estado</label>
             <select className="select-dark" value={form.estado} onChange={(e) => setForm({ ...form, estado: e.target.value })}>
               {ESTADOS.map((e) => <option key={e} value={e}>{e}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-xs font-semibold text-text-muted mb-1.5">Usuario</label>
+            <label className="form-label">Usuario</label>
             <select className="select-dark" value={form.usuarioId} onChange={(e) => setForm({ ...form, usuarioId: e.target.value })}>
               <option value="">Sin asignar</option>
               {usuarios.map((u) => <option key={u.id} value={u.id}>{u.nombre} {u.apellido}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-xs font-semibold text-text-muted mb-1.5">Área</label>
+            <label className="form-label">Área</label>
             <input type="text" className="input-dark" value={form.area} onChange={(e) => setForm({ ...form, area: e.target.value })} />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-text-muted mb-1.5">Ubicación</label>
+            <label className="form-label">Ubicación</label>
             <input type="text" className="input-dark" value={form.ubicacion} onChange={(e) => setForm({ ...form, ubicacion: e.target.value })} />
           </div>
         </div>

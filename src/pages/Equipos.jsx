@@ -98,7 +98,7 @@ export default function Equipos({ showToast }) {
         <StatCard icon={Cpu} value={kpis.mantenimiento} label="Mantenimiento" description="En reparación" color="#f59e0b" delay={0.15} />
       </div>
 
-      <div className="card-premium p-4 animate-fade-in-up stagger-2">
+      <div className="card-premium p-4 animate-fade-in-up">
         <FilterBar
           search={search}
           onSearchChange={(v) => { setSearch(v); setPage(1); }}
@@ -216,36 +216,36 @@ export default function Equipos({ showToast }) {
         <div className="space-y-6">
           {/* Sección: Información General */}
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-widest text-text-muted mb-3 flex items-center gap-2">
+            <h4 className="form-section-title">
               <Info size={14} className="text-ctp-cyan" /> Información General
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-semibold mb-1.5">Código de activo *</label>
+                <label className="form-label">Código de activo *</label>
                 <input type="text" className="input-dark w-full" value={form.codigo} onChange={(e) => setForm({ ...form, codigo: e.target.value })} placeholder="TI-PC-XXXXX" />
               </div>
               <div>
-                <label className="block text-sm font-semibold mb-1.5">Tipo *</label>
+                <label className="form-label">Tipo *</label>
                 <select className="select-dark w-full" value={form.tipo} onChange={(e) => setForm({ ...form, tipo: e.target.value })}>
                   {TIPOS.map((t) => <option key={t} value={t}>{t}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-semibold mb-1.5">Marca *</label>
+                <label className="form-label">Marca *</label>
                 <select className="select-dark w-full" value={form.marca} onChange={(e) => setForm({ ...form, marca: e.target.value })}>
                   {MARCAS.map((m) => <option key={m} value={m}>{m}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-semibold mb-1.5">Modelo *</label>
+                <label className="form-label">Modelo *</label>
                 <input type="text" className="input-dark w-full" value={form.modelo} onChange={(e) => setForm({ ...form, modelo: e.target.value })} />
               </div>
               <div>
-                <label className="block text-sm font-semibold mb-1.5">Serial *</label>
+                <label className="form-label">Serial *</label>
                 <input type="text" className="input-dark w-full" value={form.serial} onChange={(e) => setForm({ ...form, serial: e.target.value })} />
               </div>
               <div>
-                <label className="block text-sm font-semibold mb-1.5">Estado</label>
+                <label className="form-label">Estado</label>
                 <select className="select-dark w-full" value={form.estado} onChange={(e) => setForm({ ...form, estado: e.target.value })}>
                   {ESTADOS.map((es) => <option key={es} value={es}>{es}</option>)}
                 </select>
@@ -255,28 +255,28 @@ export default function Equipos({ showToast }) {
 
           {/* Sección: Especificaciones Técnicas */}
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-widest text-text-muted mb-3 flex items-center gap-2">
+            <h4 className="form-section-title">
               <Cpu size={14} className="text-ctp-cyan" /> Especificaciones Técnicas
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-semibold mb-1.5">Procesador</label>
+                <label className="form-label">Procesador</label>
                 <input type="text" className="input-dark w-full" value={form.procesador} onChange={(e) => setForm({ ...form, procesador: e.target.value })} />
               </div>
               <div>
-                <label className="block text-sm font-semibold mb-1.5">RAM</label>
+                <label className="form-label">RAM</label>
                 <select className="select-dark w-full" value={form.ram} onChange={(e) => setForm({ ...form, ram: e.target.value })}>
                   {["4 GB", "8 GB", "16 GB", "32 GB", "64 GB"].map((r) => <option key={r} value={r}>{r}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-semibold mb-1.5">Almacenamiento</label>
+                <label className="form-label">Almacenamiento</label>
                 <select className="select-dark w-full" value={form.almacenamiento} onChange={(e) => setForm({ ...form, almacenamiento: e.target.value })}>
                   {["128 GB SSD", "256 GB SSD", "512 GB SSD", "1 TB SSD", "1 TB HDD"].map((a) => <option key={a} value={a}>{a}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-semibold mb-1.5">Sistema Operativo</label>
+                <label className="form-label">Sistema Operativo</label>
                 <select className="select-dark w-full" value={form.so} onChange={(e) => setForm({ ...form, so: e.target.value })}>
                   {["Windows 10 Pro", "Windows 11 Home", "Windows 11 Pro", "macOS", "Linux Ubuntu"].map((s) => <option key={s} value={s}>{s}</option>)}
                 </select>
@@ -286,26 +286,26 @@ export default function Equipos({ showToast }) {
 
           {/* Sección: Asignación y Ubicación */}
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-widest text-text-muted mb-3 flex items-center gap-2">
+            <h4 className="form-section-title">
               <User size={14} className="text-ctp-cyan" /> Asignación y Ubicación
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-semibold mb-1.5">Usuario</label>
+                <label className="form-label">Usuario</label>
                 <select className="select-dark w-full" value={form.usuarioId} onChange={(e) => setForm({ ...form, usuarioId: e.target.value })}>
                   <option value="">Sin asignar</option>
                   {usuarios.map((u) => <option key={u.id} value={u.id}>{u.nombre} {u.apellido}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-semibold mb-1.5">Área</label>
+                <label className="form-label">Área</label>
                 <select className="select-dark w-full" value={form.area} onChange={(e) => setForm({ ...form, area: e.target.value })}>
                   <option value="">Seleccionar...</option>
                   {AREAS.map((a) => <option key={a} value={a}>{a}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-semibold mb-1.5">Ubicación</label>
+                <label className="form-label">Ubicación</label>
                 <select className="select-dark w-full" value={form.ubicacion} onChange={(e) => setForm({ ...form, ubicacion: e.target.value })}>
                   <option value="">Seleccionar...</option>
                   {UBICACIONES.map((u) => <option key={u} value={u}>{u}</option>)}
@@ -316,24 +316,24 @@ export default function Equipos({ showToast }) {
 
           {/* Sección: Compra y Garantía */}
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-widest text-text-muted mb-3 flex items-center gap-2">
+            <h4 className="form-section-title">
               <ShieldCheck size={14} className="text-ctp-cyan" /> Compra y Garantía
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div>
-                <label className="block text-sm font-semibold mb-1.5">Fecha compra</label>
+                <label className="form-label">Fecha compra</label>
                 <input type="date" className="input-dark w-full" value={form.fechaCompra} onChange={(e) => setForm({ ...form, fechaCompra: e.target.value })} />
               </div>
               <div>
-                <label className="block text-sm font-semibold mb-1.5">Fecha garantía</label>
+                <label className="form-label">Fecha garantía</label>
                 <input type="date" className="input-dark w-full" value={form.fechaGarantia} onChange={(e) => setForm({ ...form, fechaGarantia: e.target.value })} />
               </div>
               <div>
-                <label className="block text-sm font-semibold mb-1.5">Proveedor</label>
+                <label className="form-label">Proveedor</label>
                 <input type="text" className="input-dark w-full" value={form.proveedor} onChange={(e) => setForm({ ...form, proveedor: e.target.value })} />
               </div>
               <div>
-                <label className="block text-sm font-semibold mb-1.5">Costo ($)</label>
+                <label className="form-label">Costo ($)</label>
                 <input type="number" className="input-dark w-full" value={form.costo} onChange={(e) => setForm({ ...form, costo: e.target.value })} />
               </div>
             </div>
@@ -341,7 +341,7 @@ export default function Equipos({ showToast }) {
 
           {/* Observaciones */}
           <div>
-            <label className="block text-sm font-semibold mb-1.5">Observaciones</label>
+            <label className="form-label">Observaciones</label>
             <textarea className="input-dark w-full" rows="2" value={form.observaciones} onChange={(e) => setForm({ ...form, observaciones: e.target.value })} placeholder="Notas adicionales sobre el equipo..."></textarea>
           </div>
         </div>
@@ -434,32 +434,32 @@ export default function Equipos({ showToast }) {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="md:col-span-2">
-                <label className="block text-sm font-semibold mb-1.5">Usuario *</label>
+                <label className="form-label">Usuario *</label>
                 <select className="select-dark w-full" value={assignForm.usuarioId} onChange={(e) => setAssignForm({ ...assignForm, usuarioId: e.target.value })}>
                   <option value="">Seleccionar...</option>
                   {usuarios.filter((u) => u.estado === "Activo").map((u) => <option key={u.id} value={u.id}>{u.nombre} {u.apellido}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-semibold mb-1.5">Área</label>
+                <label className="form-label">Área</label>
                 <select className="select-dark w-full" value={assignForm.area} onChange={(e) => setAssignForm({ ...assignForm, area: e.target.value })}>
                   <option value="">Seleccionar...</option>
                   {AREAS.map((a) => <option key={a} value={a}>{a}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-semibold mb-1.5">Ubicación</label>
+                <label className="form-label">Ubicación</label>
                 <select className="select-dark w-full" value={assignForm.ubicacion} onChange={(e) => setAssignForm({ ...assignForm, ubicacion: e.target.value })}>
                   <option value="">Seleccionar...</option>
                   {UBICACIONES.map((u) => <option key={u} value={u}>{u}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-semibold mb-1.5">Fecha</label>
+                <label className="form-label">Fecha</label>
                 <input type="date" className="input-dark w-full" value={assignForm.fechaAsignacion} onChange={(e) => setAssignForm({ ...assignForm, fechaAsignacion: e.target.value })} />
               </div>
               <div className="md:col-span-2">
-                <label className="block text-sm font-semibold mb-1.5">Observaciones</label>
+                <label className="form-label">Observaciones</label>
                 <textarea className="input-dark w-full" rows="2" value={assignForm.observaciones} onChange={(e) => setAssignForm({ ...assignForm, observaciones: e.target.value })}></textarea>
               </div>
             </div>

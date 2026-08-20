@@ -98,7 +98,7 @@ export default function Perifericos({ showToast }) {
         ))}
       </div>
 
-      <div className="card-premium p-4 animate-fade-in-up stagger-2">
+      <div className="card-premium p-4 animate-fade-in-up">
           <FilterBar
             search={search}
             onSearchChange={(v) => { setSearch(v); setPage(1); }}
@@ -184,7 +184,7 @@ export default function Perifericos({ showToast }) {
       >
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold uppercase tracking-wider text-text-muted">Código *</label>
+            <label className="form-label">Código *</label>
             <input
               type="text"
               className="input-dark"
@@ -194,19 +194,19 @@ export default function Perifericos({ showToast }) {
             />
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold uppercase tracking-wider text-text-muted">Tipo *</label>
+            <label className="form-label">Tipo *</label>
             <select className="select-dark" value={form.tipo} onChange={(e) => setForm({ ...form, tipo: e.target.value })}>
               {TIPOS_PER.map((t) => <option key={t} value={t}>{t}</option>)}
             </select>
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold uppercase tracking-wider text-text-muted">Marca *</label>
+            <label className="form-label">Marca *</label>
             <select className="select-dark" value={form.marca} onChange={(e) => setForm({ ...form, marca: e.target.value })}>
               {MARCAS_PER.map((m) => <option key={m} value={m}>{m}</option>)}
             </select>
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold uppercase tracking-wider text-text-muted">Modelo *</label>
+            <label className="form-label">Modelo *</label>
             <input
               type="text"
               className="input-dark"
@@ -215,7 +215,7 @@ export default function Perifericos({ showToast }) {
             />
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold uppercase tracking-wider text-text-muted">Serial *</label>
+            <label className="form-label">Serial *</label>
             <input
               type="text"
               className="input-dark"
@@ -224,20 +224,20 @@ export default function Perifericos({ showToast }) {
             />
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold uppercase tracking-wider text-text-muted">Estado</label>
+            <label className="form-label">Estado</label>
             <select className="select-dark" value={form.estado} onChange={(e) => setForm({ ...form, estado: e.target.value })}>
               {ESTADOS.map((e) => <option key={e} value={e}>{e}</option>)}
             </select>
           </div>
           <div className="flex flex-col gap-1.5 md:col-span-2">
-            <label className="text-xs font-semibold uppercase tracking-wider text-text-muted">Usuario</label>
+            <label className="form-label">Usuario</label>
             <select className="select-dark" value={form.usuarioId} onChange={(e) => setForm({ ...form, usuarioId: e.target.value })}>
               <option value="">Sin asignar</option>
               {usuarios.map((u) => <option key={u.id} value={u.id}>{u.nombre} {u.apellido}</option>)}
             </select>
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold uppercase tracking-wider text-text-muted">Ubicación</label>
+            <label className="form-label">Ubicación</label>
             <input
               type="text"
               className="input-dark"

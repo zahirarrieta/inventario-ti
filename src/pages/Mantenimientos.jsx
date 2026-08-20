@@ -57,7 +57,7 @@ export default function Mantenimientos({ showToast }) {
 
   const getTipoBadge = (tipo) => tipo === "Preventivo"
     ? "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-ctp-cyan/10 text-ctp-cyan border border-ctp-cyan/25"
-    : "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/25";
+    : "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-warning/10 text-warning border border-warning/25";
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -167,11 +167,11 @@ export default function Mantenimientos({ showToast }) {
       >
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
-            <label className="block text-xs font-medium text-text-muted mb-1.5">Código</label>
+            <label className="form-label">Código</label>
             <input type="text" className="input-dark w-full" value={form.codigo} onChange={(e) => setForm({ ...form, codigo: e.target.value })} placeholder="MTTO-XXX" />
           </div>
           <div className="lg:col-span-2">
-            <label className="block text-xs font-medium text-text-muted mb-1.5">Activo *</label>
+            <label className="form-label">Activo *</label>
             <select className="select-dark w-full" value={form.activoId} onChange={(e) => setForm({ ...form, activoId: e.target.value })}>
               <option value="">Seleccionar activo...</option>
               {equipos.map((eq) => (
@@ -180,35 +180,35 @@ export default function Mantenimientos({ showToast }) {
             </select>
           </div>
           <div>
-            <label className="block text-xs font-medium text-text-muted mb-1.5">Tipo *</label>
+            <label className="form-label">Tipo *</label>
             <select className="select-dark w-full" value={form.tipo} onChange={(e) => setForm({ ...form, tipo: e.target.value })}>
               {TIPOS_MTTO.map((t) => <option key={t} value={t}>{t}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-xs font-medium text-text-muted mb-1.5">Fecha *</label>
+            <label className="form-label">Fecha *</label>
             <input type="date" className="input-dark w-full" value={form.fecha} onChange={(e) => setForm({ ...form, fecha: e.target.value })} />
           </div>
           <div>
-            <label className="block text-xs font-medium text-text-muted mb-1.5">Estado</label>
+            <label className="form-label">Estado</label>
             <select className="select-dark w-full" value={form.estado} onChange={(e) => setForm({ ...form, estado: e.target.value })}>
               {ESTADOS_M.map((es) => <option key={es} value={es}>{es}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-xs font-medium text-text-muted mb-1.5">Técnico *</label>
+            <label className="form-label">Técnico *</label>
             <input type="text" className="input-dark w-full" value={form.tecnico} onChange={(e) => setForm({ ...form, tecnico: e.target.value })} />
           </div>
           <div>
-            <label className="block text-xs font-medium text-text-muted mb-1.5">Costo ($)</label>
+            <label className="form-label">Costo ($)</label>
             <input type="number" className="input-dark w-full" value={form.costo} onChange={(e) => setForm({ ...form, costo: e.target.value })} />
           </div>
           <div className="md:col-span-2 lg:col-span-3">
-            <label className="block text-xs font-medium text-text-muted mb-1.5">Descripción *</label>
+            <label className="form-label">Descripción *</label>
             <textarea className="input-dark w-full" rows="3" value={form.descripcion} onChange={(e) => setForm({ ...form, descripcion: e.target.value })} placeholder="Describa el trabajo realizado..."></textarea>
           </div>
           <div>
-            <label className="block text-xs font-medium text-text-muted mb-1.5">Próxima fecha</label>
+            <label className="form-label">Próxima fecha</label>
             <input type="date" className="input-dark w-full" value={form.proximaFecha} onChange={(e) => setForm({ ...form, proximaFecha: e.target.value })} />
           </div>
         </div>
